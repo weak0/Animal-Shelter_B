@@ -1,0 +1,16 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Animal Shelter", "Animal Shelter\Animal Shelter.csproj", "{1082147E-7CB8-4612-A5B3-128634D9D22A}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{1082147E-7CB8-4612-A5B3-128634D9D22A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1082147E-7CB8-4612-A5B3-128634D9D22A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1082147E-7CB8-4612-A5B3-128634D9D22A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1082147E-7CB8-4612-A5B3-128634D9D22A}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
