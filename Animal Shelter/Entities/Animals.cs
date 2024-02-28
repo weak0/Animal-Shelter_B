@@ -15,11 +15,12 @@ public class Animals
     public int AnimalId { get; set; }
     [Required]
     public string AnimalName { get; set; }
-    public virtual Shelter Shelter { get; set; }
+    
+    public Shelter Shelter { get; set; }
     [Required]
     public AnimalSize Size { get; set; }
     public DateTime DateAdded { get; private set; }
-
+    [Required]
     public int ShelterId { get; set; }
     public Animals()
     {
