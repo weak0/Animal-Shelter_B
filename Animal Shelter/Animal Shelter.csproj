@@ -5,6 +5,7 @@
         <Nullable>enable</Nullable>
         <ImplicitUsings>enable</ImplicitUsings>
         <RootNamespace>Animal_Shelter</RootNamespace>
+        <UserSecretsId>aeec8f31-49c9-4545-a328-0e82a45019a3</UserSecretsId>
     </PropertyGroup>
 
     <ItemGroup>
