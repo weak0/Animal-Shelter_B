@@ -1,4 +1,5 @@
-﻿using Animal_Shelter.Entities;
+﻿using Animal_Shelter.Data;
+using Animal_Shelter.Entities;
 using Animal_Shelter.Models;
 using Microsoft.AspNetCore.Mvc;
 
@@ -13,9 +14,9 @@ public interface ICostService
 
 public class CostService : ICostService
 {
-    private readonly AnimalShelterContext _context;
+    private readonly AnimalShelterDbContext _context;
 
-    public CostService(AnimalShelterContext context)
+    public CostService(AnimalShelterDbContext context)
     {
         _context = context;
     }

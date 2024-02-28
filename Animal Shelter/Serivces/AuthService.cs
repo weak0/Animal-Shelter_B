@@ -1,6 +1,7 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using Animal_Shelter.Data;
 using Animal_Shelter.Entities;
 using Animal_Shelter.Models;
 using FluentValidation;
@@ -18,12 +19,12 @@ public interface IAuthSerivce
 
 public class AuthService : IAuthSerivce
 {
-    private readonly AnimalShelterContext _db;
+    private readonly AnimalShelterDbContext _db;
     private readonly IValidator<AuthShelterDto> _createShelterValidator;
     private readonly IPasswordHasher<Shelter> _passwordHasher;
     private readonly AuthenticationSettings _authSettings;
 
-    public AuthService(AnimalShelterContext db, IValidator<AuthShelterDto> createShelterValidator, IPasswordHasher<Shelter> passwordHasher, AuthenticationSettings authSettings)
+    public AuthService(AnimalShelterDbContext db, IValidator<AuthShelterDto> createShelterValidator, IPasswordHasher<Shelter> passwordHasher, AuthenticationSettings authSettings)
     {
         _db = db;
         _createShelterValidator = createShelterValidator;

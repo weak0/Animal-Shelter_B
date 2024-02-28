@@ -1,5 +1,6 @@
 using System.Text;
 using Animal_Shelter;
+using Animal_Shelter.Data;
 using Animal_Shelter.Entities;
 using Animal_Shelter.Models;
 using Animal_Shelter.Models.Validators;
@@ -15,7 +16,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.AddDbContext<AnimalShelterContext>(options =>
+builder.Services.AddDbContext<AnimalShelterDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 builder.Services.AddScoped<IValidator<AuthShelterDto>, CreateShelterValidator>();
 builder.Services.AddScoped<IAuthSerivce, AuthService>();
