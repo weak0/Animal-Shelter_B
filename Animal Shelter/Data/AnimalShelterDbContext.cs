@@ -8,4 +8,7 @@ public class AnimalShelterDbContext : DbContext
     {
         
     }
+
+    public DbSet<Animals> Animals { get; set; }
+    public DbSet<AnimalShelter> AnimalShelters { get; set; }
 }
