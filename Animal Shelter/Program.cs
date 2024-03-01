@@ -5,6 +5,7 @@ using Animal_Shelter.Entities;
 using Animal_Shelter.Models;
 using Animal_Shelter.Models.Validators;
 using Animal_Shelter.Serivces;
+using Animal_Shelter.Services;
 using FluentValidation;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -41,7 +42,9 @@ builder.Services.AddAuthentication(options =>
     };
 });
 builder.Services.AddScoped<IAuthSerivce, AuthService>();
-
+builder.Services.AddScoped<IAnimalsService, AnimalsService>();
+builder.Services.AddScoped<IShelterService, ShelterService>();
+builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 var app = builder.Build();
 
