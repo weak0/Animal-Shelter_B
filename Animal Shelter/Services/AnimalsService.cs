@@ -32,12 +32,7 @@ public class AnimalsService : IAnimalsService
 
     public async Task<GetAnimalDto> GetAnimalById(int animalId)
     {
-        var animal = await _dbContext.Animals.FindAsync(animalId);
-        if (animal is null)
-        {
-            throw new NotFoundException("Animal id not found.");
-        }
-
+        var animal = await _dbContext.Animals.FindAsync(animalId) ?? throw new NotFoundException("Animal id not found.");
         return _mapper.Map<GetAnimalDto>(animal);
     }
 
@@ -49,12 +44,7 @@ public class AnimalsService : IAnimalsService
 
     public async Task<List<GetAnimalDto>> GetAllAnimalsByShelterId(int shelterId)
     {
-        var animals = await _dbContext.Animals.Where(a=>a.ShelterId == shelterId).ToListAsync();
-        if (animals is null)
-        {
-            throw new NotFoundException("Animal shelter id not found.");
-        }
-
+        var animals = await _dbContext.Animals.Where(a=>a.ShelterId == shelterId).ToListAsync() ?? throw new NotFoundException("Animal shelter id not found.");
         return _mapper.Map<List<GetAnimalDto>>(animals);
     }
 
@@ -64,9 +54,8 @@ public class AnimalsService : IAnimalsService
         var shelterName = await _shelterService.GetShelterName(dto.ShelterId);
 
         if (animal.ShelterId != dto.ShelterId)
-        {
             throw new Exception($"Is the chosen shelter correct? {shelterName} is not the same as {dto.ShelterId}.");
-        }
+        
         await _dbContext.Animals.AddAsync(animal);
         await _dbContext.SaveChangesAsync();
         return _mapper.Map<AddAnimalDto>(animal);
@@ -74,12 +63,7 @@ public class AnimalsService : IAnimalsService
 
     public async Task DeleteAnimal(int animalId)
     {
-        var animal = await _dbContext.Animals.FindAsync(animalId);
-        if (animal is null)
-        {
-            throw new NotFoundException("Animal id not found.");
-        }
-
+        var animal = await _dbContext.Animals.FindAsync(animalId) ?? throw new NotFoundException("Animal id not found.");
         _dbContext.Animals.Remove(animal);
         await _dbContext.SaveChangesAsync();
         

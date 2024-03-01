@@ -18,15 +18,9 @@ public class ShelterService : IShelterService
     
     public async Task<string> GetShelterName(int shelterId)
     {
-        var shelter = await _dbContext.Shelters.FindAsync(shelterId);
-
-        if (shelter != null)
-        {
-            return shelter.Name;
-        }
-        else
-        {
-            throw new NotFoundException("The Animal Shelter ID not found.");
-        }
+        var shelter = await _dbContext.Shelters.FindAsync(shelterId) ?? throw new NotFoundException("The Animal Shelter ID not found.");
+        
+        return shelter.Name;
+      
     }
 }
