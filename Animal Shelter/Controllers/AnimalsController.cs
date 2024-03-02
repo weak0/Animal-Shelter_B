@@ -37,7 +37,7 @@ public class AnimalsController : ControllerBase
     }
 
     [HttpPost("/[controller]/[action]")]
-    public async Task<ActionResult<AddAnimalDto>> AddAnimal([FromRoute]AddAnimalDto dto)
+    public async Task<ActionResult<AddAnimalDto>> AddAnimal([FromBody]AddAnimalDto dto)
 
     {
         var serviceResponse = await _animalsService.AddAnimal(dto);
