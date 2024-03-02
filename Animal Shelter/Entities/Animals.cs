@@ -9,13 +9,21 @@ public enum AnimalSize
     Medium = 2,
     Large = 3
 }
+
+public enum AnimalType
+{
+    Dog = 1,
+    Cat = 2,
+    Other = 3
+}
 public class Animals
 {
     [Key]
     public int AnimalId { get; set; }
     [Required]
     public string AnimalName { get; set; }
-    
+    [Required]
+    public AnimalType Type { get; set; }
     public Shelter Shelter { get; set; }
     [Required]
     public AnimalSize Size { get; set; }
