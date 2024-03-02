@@ -15,28 +15,28 @@ public class AnimalsController : ControllerBase
         _animalsService = animalsService;
     }
 
-    [HttpGet("Get Animal by ID")]
+    [HttpGet("/[controller]/animal/{animalId:int}")]
     public async Task<ActionResult<GetAnimalDto>> GetAnimalById([FromRoute]int animalId)
     {
         var serviceRespone = await _animalsService.GetAnimalById(animalId);
         return Ok(serviceRespone);
     }
 
-    [HttpGet("Get All Animals")]
+    [HttpGet("/[controller]/all/")]
     public async Task<ActionResult<List<GetAnimalDto>>> GetAllAnimals()
     {
         var serviceResponse = await _animalsService.GetAllAnimals();
         return Ok(serviceResponse);
     }
 
-    [HttpGet("Get All Animals by Shelter ID")]
+    [HttpGet("/[controller]/shelter/{shelterId:int}")]
     public async Task<ActionResult<List<GetAnimalDto>>> GetAllAnimalsByShelterId([FromRoute]int shelterId)
     {
         var serviceResponse = await _animalsService.GetAllAnimalsByShelterId(shelterId);
         return Ok(serviceResponse);
     }
 
-    [HttpPost("Add New Animal")]
+    [HttpPost("/[controller]/[action]")]
     public async Task<ActionResult<AddAnimalDto>> AddAnimal([FromBody]AddAnimalDto dto)
 
     {
@@ -44,7 +44,7 @@ public class AnimalsController : ControllerBase
         return Ok(serviceResponse);
     }
 
-    [HttpDelete("Delete Animal")]
+    [HttpDelete("/[controller]/delete/{animalId:int}")]
     public async Task<ActionResult> DeleteAnimal([FromRoute]int animalId)
     {
         await _animalsService.DeleteAnimal(animalId);
