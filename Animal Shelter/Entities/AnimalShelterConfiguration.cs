@@ -3,6 +3,6 @@
 public class AnimalShelterConfiguration
 {
     public int ShelterConfigId { get; set; }
-    public string? ShelterConfigName { get; set; }
+    public string ShelterConfigName { get; set; }
     public int ShelterId { get; set; }
 }

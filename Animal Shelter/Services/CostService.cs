@@ -1,38 +1,64 @@
 ﻿using Animal_Shelter.Data;
 using Animal_Shelter.Entities;
+using Animal_Shelter.Exceptions;
 using Animal_Shelter.Models;
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace Animal_Shelter.Services;
 
 public interface ICostService
 {
     Task<AddCostDto> AddCost(AddCostDto newCost);
-    Task UpdateCost(int id, AddCostDto updatedCost);
-    Task DeleteCost(int id);
+    Task UpdateCost(int costId, UpdateCostDto updatedCost);
+    Task DeleteCost(int costId);
+    Task<List<GetCostsDto>> GetAllCosts();
 }
 
 public class CostService : ICostService
 {
     private readonly AnimalShelterDbContext _context;
-
-    public CostService(AnimalShelterDbContext context)
+    private readonly IMapper _mapper;
+    private readonly IConfigurationService _configurationService;
+    
+    public CostService(AnimalShelterDbContext context, IMapper mapper, IConfigurationService configurationService)
     {
         _context = context;
+        _mapper = mapper;
+        _configurationService = configurationService;
     }
 
-    public Task<AddCostDto> AddCost(AddCostDto newCost)
+    public async Task<AddCostDto> AddCost(AddCostDto dto)
     {
-        throw new NotImplementedException();
+        var cost = _mapper.Map<Costs>(dto);
+        var configuration = await _configurationService.GetConfigurationName(dto.ShelterConfigId);
+
+        if (cost.ShelterConfigId != dto.ShelterConfigId)
+            throw new Exception($"Is the chosen configuration correct? {configuration} is not the same as {dto.ShelterConfigId}.");
+        
+        await _context.Costs.AddAsync(cost);
+        await _context.SaveChangesAsync();
+        return _mapper.Map<AddCostDto>(cost);
     }
 
-    public Task UpdateCost(int id, AddCostDto updatedCost)
+    public async Task UpdateCost(int id, UpdateCostDto dto)
     {
-        throw new NotImplementedException();
+        var cost = await _context.Costs.FindAsync(id) ?? throw new NotFoundException("The cost ID not found.");
+        _context.Costs.Update(cost);
+        await _context.SaveChangesAsync();
     }
 
-    public Task DeleteCost(int id)
+    public async Task DeleteCost(int id)
     {
-        throw new NotImplementedException();
+        var cost = await _context.Costs.FindAsync(id) ?? throw new NotFoundException("The cost ID not found.");
+        _context.Costs.Remove(cost);
+        await _context.SaveChangesAsync();
+    }
+    
+    public async Task<List<GetCostsDto>> GetAllCosts()
+    {
+        var costs = await _context.Costs.ToListAsync();
+        return _mapper.Map<List<GetCostsDto>>(costs);
     }
 }
