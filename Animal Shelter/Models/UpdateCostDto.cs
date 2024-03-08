@@ -10,5 +10,5 @@ public class UpdateCostDto
     public CostsCategory Category { get; set; }
     public int ShelterConfigId { get; set; }
     public decimal? Cost { get; set; }
-    public string PaymentPeriod { get; set; }
+    public PaymentPeriod PaymentPeriod { get; set; }
 }
