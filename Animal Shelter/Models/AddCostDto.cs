@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using Animal_Shelter.Entities;
 
 namespace Animal_Shelter.Models;
 
@@ -8,7 +9,7 @@ public class AddCostDto
     public string CostName { get; set; }
     public string? CostDescription { get; set; }
     [Required]
-    public int Category{ get; set; }
+    public CostsCategory Category{ get; set; }
     [Required]
     public int ShelterConfigId { get; set; }
     [Required]
