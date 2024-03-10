@@ -36,7 +36,7 @@ public class AnimalsController : ControllerBase
         return Ok(serviceResponse);
     }
 
-    [HttpPost("/animals/add")]
+    [HttpPost("/animals")]
     public async Task<ActionResult<AddAnimalDto>> AddAnimal([FromBody]AddAnimalDto dto)
 
     {

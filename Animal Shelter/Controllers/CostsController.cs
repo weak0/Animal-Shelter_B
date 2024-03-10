@@ -16,21 +16,21 @@ public class CostsController : ControllerBase
         _costService = costService;
     }
     
-    [HttpPost("/configuration/costs/add")]
+    [HttpPost("/configuration/costs")]
     public async Task<ActionResult<AddCostDto>> AddCost([FromBody] AddCostDto dto)
     {
         var serviceResponse = await _costService.AddCost(dto);
         return Ok(serviceResponse);
     }
     
-    [HttpPut("/configuration/costs/update/{costId}")]
+    [HttpPut("/configuration/costs/{costId}")]
     public async Task<ActionResult> UpdateCost([FromRoute] int costId, [FromBody] UpdateCostDto dto)
     {
         await _costService.UpdateCost(costId, dto);
         return NoContent();
     }
     
-    [HttpDelete("/configuration/costs/delete/{costId}")]
+    [HttpDelete("/configuration/costs/{costId}")]
     public async Task<ActionResult> DeleteCost([FromRoute]int costId)
     {
         await _costService.DeleteCost(costId);

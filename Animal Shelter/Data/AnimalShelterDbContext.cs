@@ -27,12 +27,10 @@ public class AnimalShelterDbContext : DbContext
         new Animals{AnimalId = 2, AnimalName = "Celestine", ShelterId = 2, Type = AnimalType.Other, Size = AnimalSize.Small},
         new Animals{AnimalId = 3, AnimalName = "Monet", ShelterId = 1, Type = AnimalType.Dog, Size = AnimalSize.Medium}
         );
-
+        modelBuilder.Entity<AnimalShelterConfiguration>().ToTable("AnimalShelterConfiguration");
         modelBuilder.Entity<AnimalShelterConfiguration>().HasData(
-            new AnimalShelterConfiguration
-                { ShelterConfigId = 1, ShelterConfigName = "Happy Animals: Standard", ShelterId = 1 },
-            new AnimalShelterConfiguration
-                { ShelterConfigId = 2, ShelterConfigName = "Pipsqueakery: Standard", ShelterId = 2 }
+        new AnimalShelterConfiguration { ShelterConfigId = 1, ShelterConfigName = "Happy Animals: Standard", ShelterId = 1 },
+        new AnimalShelterConfiguration { ShelterConfigId = 2, ShelterConfigName = "Pipsqueakery: Standard", ShelterId = 2 }
         );
     }
 }

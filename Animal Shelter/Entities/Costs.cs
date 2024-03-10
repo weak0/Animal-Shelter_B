@@ -4,16 +4,16 @@ namespace Animal_Shelter.Entities;
 
 public enum CostsCategory
 {
-    Maintenance,
-    Food,
-    Employees
+    Maintenance = 1,
+    Food = 2,
+    Employees =3
 }
 
 public enum PaymentPeriod
 {
-    Daily,
-    Monthly,
-    Yearly
+    Daily = 1,
+    Monthly =2,
+    Yearly = 3
 }
 public class Costs
 {
