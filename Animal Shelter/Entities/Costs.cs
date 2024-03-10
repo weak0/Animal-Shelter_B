@@ -1,4 +1,6 @@
-﻿namespace Animal_Shelter.Entities;
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace Animal_Shelter.Entities;
 
 public enum CostsCategory
 {
@@ -15,6 +17,7 @@ public enum PaymentPeriod
 }
 public class Costs
 {
+    [Key]
     public int CostId { get; set; }
     public string CostName { get; set; }
     public string? CostDescription { get; set; }

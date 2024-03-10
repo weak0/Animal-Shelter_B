@@ -4,6 +4,7 @@ namespace Animal_Shelter.Entities;
 
 public class Shelter
 {
+    [Key]
     public int ShelterId { get; set; }
     public string Email { get; set; }
     public string Name { get; set; }
