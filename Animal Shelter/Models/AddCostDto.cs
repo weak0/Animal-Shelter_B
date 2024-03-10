@@ -15,5 +15,5 @@ public class AddCostDto
     [Required]
     public decimal? Cost { get; set; }
     [Required]
-    public string PaymentPeriod { get; set; }
+    public PaymentPeriod PaymentPeriod { get; set; }
 }

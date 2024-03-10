@@ -44,6 +44,8 @@ builder.Services.AddAuthentication(options =>
 builder.Services.AddScoped<IAuthSerivce, AuthService>();
 builder.Services.AddScoped<IAnimalsService, AnimalsService>();
 builder.Services.AddScoped<IShelterService, ShelterService>();
+builder.Services.AddScoped<IConfigurationService, ConfigurationService>();
+builder.Services.AddScoped<ICostService, CostService>();
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 var app = builder.Build();

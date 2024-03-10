@@ -3,7 +3,6 @@ using Animal_Shelter.Entities;
 using Animal_Shelter.Exceptions;
 using Animal_Shelter.Models;
 using AutoMapper;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace Animal_Shelter.Services;
