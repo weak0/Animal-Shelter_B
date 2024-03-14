@@ -19,7 +19,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<AnimalShelterDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
-builder.Services.AddScoped<IValidator<AuthShelterDto>, CreateShelterValidator>();
+builder.Services.AddScoped<IValidator<AuthShelterRegisterDto>, CreateShelterValidator>();
 builder.Services.AddScoped<IAuthSerivce, AuthService>();
 builder.Services.AddScoped<IPasswordHasher<Shelter>, PasswordHasher<Shelter>>();
 var authSettings = new AuthenticationSettings();

@@ -4,6 +4,7 @@ using System.Text;
 using Animal_Shelter.Data;
 using Animal_Shelter.Entities;
 using Animal_Shelter.Models;
+using Animal_Shelter.Models.Validators;
 using FluentValidation;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -20,29 +21,33 @@ public interface IAuthSerivce
 public class AuthService : IAuthSerivce
 {
     private readonly AnimalShelterDbContext _db;
-    private readonly IValidator<AuthShelterDto> _createShelterValidator;
+    private readonly IValidator<AuthShelterRegisterDto> _createShelterValidator;
     private readonly IPasswordHasher<Shelter> _passwordHasher;
     private readonly AuthenticationSettings _authSettings;
 
-    public AuthService(AnimalShelterDbContext db, IValidator<AuthShelterDto> createShelterValidator, IPasswordHasher<Shelter> passwordHasher, AuthenticationSettings authSettings)
+    public AuthService(AnimalShelterDbContext db, CreateShelterValidator createShelterValidator, IPasswordHasher<Shelter> passwordHasher, AuthenticationSettings authSettings)
     {
         _db = db;
         _createShelterValidator = createShelterValidator;
         _passwordHasher = passwordHasher;
-        this._authSettings = authSettings;
+        _authSettings = authSettings;
     }
     public async Task CreateUser(AuthShelterRegisterDto dto)
     {
         var validationResult = await _createShelterValidator.ValidateAsync(dto);
-        if (!validationResult.IsValid)
+        var isUserAlreadyExist = await _db.Shelters.AnyAsync(x => x.Email == dto.Email);
+        
+        if (!validationResult.IsValid || isUserAlreadyExist)
         {
             throw new ValidationException(validationResult.Errors);
         }
+        
         var newShelter = new Shelter()
         {
             Name = dto.Name,
             Email = dto.Email,
-        };    
+        }; 
+        
         newShelter.HashedPassword = _passwordHasher.HashPassword(newShelter, dto.Password);
         await _db.Shelters.AddAsync(newShelter);
         await _db.SaveChangesAsync();
