@@ -19,12 +19,10 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<AnimalShelterDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
-builder.Services.AddScoped<IValidator<AuthShelterRegisterDto>, CreateShelterValidator>();
-builder.Services.AddScoped<IAuthSerivce, AuthService>();
 builder.Services.AddScoped<IPasswordHasher<Shelter>, PasswordHasher<Shelter>>();
 var authSettings = new AuthenticationSettings();
 builder.Configuration.GetSection("Auth").Bind(authSettings);
-builder.Services.AddSingleton(authSettings);
+builder.Services.AddSingleton<IAuthenticationSettings>(authSettings);
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultAuthenticateScheme = "Bearer";
@@ -41,6 +39,7 @@ builder.Services.AddAuthentication(options =>
         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(authSettings.JwtKey))
     };
 });
+builder.Services.AddSingleton<IValidator<AuthShelterRegisterDto>, CreateShelterValidator>();
 builder.Services.AddScoped<IAuthSerivce, AuthService>();
 builder.Services.AddScoped<IAnimalsService, AnimalsService>();
 builder.Services.AddScoped<IShelterService, ShelterService>();
@@ -63,3 +62,7 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
+
+public partial class Program
+{
+};

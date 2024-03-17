@@ -23,9 +23,9 @@ public class AuthService : IAuthSerivce
     private readonly AnimalShelterDbContext _db;
     private readonly IValidator<AuthShelterRegisterDto> _createShelterValidator;
     private readonly IPasswordHasher<Shelter> _passwordHasher;
-    private readonly AuthenticationSettings _authSettings;
+    private readonly IAuthenticationSettings _authSettings;
 
-    public AuthService(AnimalShelterDbContext db, CreateShelterValidator createShelterValidator, IPasswordHasher<Shelter> passwordHasher, AuthenticationSettings authSettings)
+    public AuthService(AnimalShelterDbContext db, IValidator<AuthShelterRegisterDto> createShelterValidator, IPasswordHasher<Shelter> passwordHasher, IAuthenticationSettings authSettings)
     {
         _db = db;
         _createShelterValidator = createShelterValidator;
