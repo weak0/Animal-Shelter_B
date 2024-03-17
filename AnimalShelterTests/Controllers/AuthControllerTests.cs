@@ -3,9 +3,7 @@ using System.Security.Claims;
 using Animal_Shelter.Data;
 using Animal_Shelter.Models;
 using AnimalShelterTests.Fixtures;
-using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Infrastructure;
 
 namespace AnimalShelterTests.Controllers;
 
