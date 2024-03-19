@@ -1,5 +1,4 @@
 ﻿using Animal_Shelter.Data;
-using Animal_Shelter.Entities;
 using Animal_Shelter.Models;
 using Animal_Shelter.Serivces;
 using Microsoft.AspNetCore.Mvc;
