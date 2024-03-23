@@ -17,6 +17,7 @@ public class AnimalShelterDbContextFixture : IDisposable
         Db = new AnimalShelterDbContext(options);
         Db.Database.EnsureCreated();
         AddTestUser(Db);
+        AddTestCost(Db);
     }
 
     public void Dispose()
@@ -31,6 +32,18 @@ public class AnimalShelterDbContextFixture : IDisposable
         user.Email = "test@gmail.com";
         user.HashedPassword = new PasswordHasher<Shelter>().HashPassword(user, "test123");
         db.Shelters.Add(user);
+        db.SaveChanges();
+    }
+    
+    private void AddTestCost(AnimalShelterDbContext db)
+    {
+        var cost = new Costs();
+        cost.CostName = "test1";
+        cost.Category = "Maintenance";
+        cost.ShelterConfigId = 1;
+        cost.Cost = 100;
+        cost.PaymentPeriod = "Monthly";
+        db.Costs.Add(cost);
         db.SaveChanges();
     }
 }
