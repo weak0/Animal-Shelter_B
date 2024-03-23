@@ -2,17 +2,17 @@
 
 namespace Animal_Shelter.Entities;
 
-public enum CostsCategory
+public enum CostsCategory : int
 {
     Maintenance = 1,
     Food = 2,
-    Employees =3
+    Employees = 3
 }
 
 public enum PaymentPeriod
 {
     Daily = 1,
-    Monthly =2,
+    Monthly = 2,
     Yearly = 3
 }
 public class Costs
@@ -21,8 +21,8 @@ public class Costs
     public int CostId { get; set; }
     public string CostName { get; set; }
     public string? CostDescription { get; set; }
-    public string Category { get; set; }
+    public CostsCategory Category { get; set; }
     public int ShelterConfigId { get; set; }
     public decimal? Cost { get; set; }
-    public string PaymentPeriod { get; set; }
+    public PaymentPeriod PaymentPeriod { get; set; }
 }
