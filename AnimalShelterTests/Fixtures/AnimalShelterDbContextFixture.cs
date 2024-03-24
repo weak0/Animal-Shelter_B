@@ -39,10 +39,10 @@ public class AnimalShelterDbContextFixture : IDisposable
     {
         var cost = new Costs();
         cost.CostName = "test1";
-        cost.Category = "Maintenance";
+        cost.Category = CostsCategory.Maintenance;
         cost.ShelterConfigId = 1;
         cost.Cost = 100;
-        cost.PaymentPeriod = "Monthly";
+        cost.PaymentPeriod = PaymentPeriod.Monthly;
         db.Costs.Add(cost);
         db.SaveChanges();
     }

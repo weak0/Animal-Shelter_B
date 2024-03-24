@@ -1,11 +1,12 @@
 ﻿using Animal_Shelter.Data;
+using Animal_Shelter.Entities;
 using Animal_Shelter.Models;
 using AnimalShelterTests.Fixtures;
 using Microsoft.EntityFrameworkCore;
 
 namespace AnimalShelterTests.Controllers;
 
-public class CostsControllerTests
+public class CostsControllerTests : IClassFixture<AnimalShelterDbContextFixture>
 {
     private readonly HttpClient _client;
     private readonly AnimalShelterDbContext _db;
@@ -24,10 +25,10 @@ public class CostsControllerTests
         var dto = new AddCostDto()
         {
             CostName = "test1",
-            Category = "Maintenance",
+            Category = CostsCategory.Maintenance,
             ShelterConfigId = 1,
             Cost = 100,
-            PaymentPeriod = "Monthly"
+            PaymentPeriod = PaymentPeriod.Monthly
         };
         //Act
         var response = await _client.PostAsJsonAsync("configuration/costs", dto);
@@ -46,10 +47,10 @@ public class CostsControllerTests
         var dto = new UpdateCostDto()
         {
             CostName = "test1",
-            Category = "Maintenance",
+            Category = CostsCategory.Maintenance,
             ShelterConfigId = 1,
             Cost = 100,
-            PaymentPeriod = "Monthly"
+            PaymentPeriod = PaymentPeriod.Monthly
         };
         //Act
         var response = await _client.PutAsJsonAsync($"configuration/costs/{dto.CostId}", dto);
@@ -68,10 +69,10 @@ public class CostsControllerTests
         var dto = new UpdateCostDto()
         {
             CostName = "test1",
-            Category = "Maintenance",
+            Category = CostsCategory.Maintenance,
             ShelterConfigId = 1,
             Cost = 100,
-            PaymentPeriod = "Monthly"
+            PaymentPeriod = PaymentPeriod.Monthly
         };
         await _db.SaveChangesAsync();
         //Act
