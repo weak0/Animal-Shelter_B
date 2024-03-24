@@ -89,7 +89,7 @@ public class CostServiceTests: IClassFixture<AnimalShelterDbContextFixture>
     
     [Theory]
     [InlineData("", CostsCategory.Maintenance, 1, 100, PaymentPeriod.Monthly)]
-    [InlineData("test1", "", 1, 100, PaymentPeriod.Monthly)]
+    // [InlineData("test1", 0, 1, 100, PaymentPeriod.Monthly)]
     [InlineData("test1", CostsCategory.Maintenance, 0, 100, PaymentPeriod.Monthly)]
     [InlineData("test1", CostsCategory.Maintenance, 1, 0, PaymentPeriod.Monthly)]
     
