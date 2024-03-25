@@ -41,16 +41,16 @@ public class CostService : ICostService
         return _mapper.Map<AddCostDto>(cost);
     }
 
-    public async Task UpdateCost(int id, UpdateCostDto dto)
+    public async Task UpdateCost(int costId, UpdateCostDto dto)
     {
-        var cost = await _context.Costs.FindAsync(id) ?? throw new NotFoundException("The cost ID not found.");
+        var cost = await _context.Costs.FindAsync(costId) ?? throw new NotFoundException("The cost ID not found.");
         _context.Costs.Update(cost);
         await _context.SaveChangesAsync();
     }
 
-    public async Task DeleteCost(int id)
+    public async Task DeleteCost(int costId)
     {
-        var cost = await _context.Costs.FindAsync(id) ?? throw new NotFoundException("The cost ID not found.");
+        var cost = await _context.Costs.FindAsync(costId) ?? throw new NotFoundException("The cost ID not found.");
         _context.Costs.Remove(cost);
         await _context.SaveChangesAsync();
     }

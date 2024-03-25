@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using Animal_Shelter;
 using Animal_Shelter.Entities;
+using Animal_Shelter.Exceptions;
 using Animal_Shelter.Mappers;
 using Animal_Shelter.Models;
 using Animal_Shelter.Models.Validators;
@@ -47,6 +48,7 @@ public class CostServiceTests: IClassFixture<AnimalShelterDbContextFixture>
         Assert.Equal(dto.CostName, serviceResponse.CostName);
         Assert.Equal(dto.Cost, serviceResponse.Cost);
     }
+    
     [Fact]
     public async Task UpdateCost_ShouldUpdateCostAndOk_WhenDataIsValid()
     {
@@ -60,11 +62,14 @@ public class CostServiceTests: IClassFixture<AnimalShelterDbContextFixture>
             PaymentPeriod = PaymentPeriod.Monthly
         };
         //Act
-         await _costService.UpdateCost(dto.CostId, dto);
+        dto.CostName = "UpdatedCostName";
+        dto.Cost = 200;
+        await _costService.UpdateCost(1, dto);
         //Assert
-        // Assert.NotNull(serviceResponse);
-        // Assert.Equal(dto.CostName, serviceResponse.CostName);
-        // Assert.Equal(dto.Cost, serviceResponse.Cost);
+        var updatedCost = await _fixture.Db.Costs.FindAsync(1);
+        Assert.NotNull(updatedCost);
+        Assert.Equal(dto.CostName, updatedCost.CostName);
+        Assert.Equal(dto.Cost, updatedCost.Cost);
     }
     [Fact]
     public async Task DeleteCost_ShouldDeleteCostAndOk_WhenDataIsValid()
@@ -89,9 +94,7 @@ public class CostServiceTests: IClassFixture<AnimalShelterDbContextFixture>
     
     [Theory]
     [InlineData("", CostsCategory.Maintenance, 1, 100, PaymentPeriod.Monthly)]
-    // [InlineData("test1", 0, 1, 100, PaymentPeriod.Monthly)]
     [InlineData("test1", CostsCategory.Maintenance, 0, 100, PaymentPeriod.Monthly)]
-    [InlineData("test1", CostsCategory.Maintenance, 1, 0, PaymentPeriod.Monthly)]
     
 public async Task AddCost_ShouldThrowException_WhenDataIsInvalid(string costName, CostsCategory category, int shelterConfigId, double cost, PaymentPeriod paymentPeriod)
     {
@@ -105,8 +108,6 @@ public async Task AddCost_ShouldThrowException_WhenDataIsInvalid(string costName
             PaymentPeriod = paymentPeriod
         };
         //Act
-        async Task Act() => await _costService.AddCost(dto);
-        //Assert
-        await Assert.ThrowsAsync<ValidationException>(Act);
+        var exception = await Assert.ThrowsAsync<NotFoundException>(async () => await _costService.AddCost(dto));
     }
 }

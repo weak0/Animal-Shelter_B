@@ -32,6 +32,7 @@ public class CostsControllerTests : IClassFixture<AnimalShelterDbContextFixture>
         };
         //Act
         var response = await _client.PostAsJsonAsync("configuration/costs", dto);
+        
         //Assert
         response.EnsureSuccessStatusCode();
         var cost = await _db.Costs.FirstOrDefaultAsync(x => x.CostName == dto.CostName);
