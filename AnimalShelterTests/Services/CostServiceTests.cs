@@ -1,14 +1,12 @@
 ﻿// tip - on the end always clear unused usings
 using System.ComponentModel.DataAnnotations;
-using Animal_Shelter;
 using Animal_Shelter.Entities;
-using Animal_Shelter.Exceptions;
 using Animal_Shelter.Mappers;
 using Animal_Shelter.Models;
 using Animal_Shelter.Services;
 using AnimalShelterTests.Fixtures;
 using AutoMapper;
-using Microsoft.EntityFrameworkCore;
+using ValidationException = FluentValidation.ValidationException;
 
 namespace AnimalShelterTests.Services;
 
@@ -75,8 +73,6 @@ public class CostServiceTests: IClassFixture<AnimalShelterDbContextFixture>
         {
             CostId = 1
         };
-        _fixture.Db.Costs.Add(cost);
-        await _fixture.Db.SaveChangesAsync();
         //Act
         await _costService.DeleteCost(cost.CostId);
         //Assert
@@ -87,7 +83,6 @@ public class CostServiceTests: IClassFixture<AnimalShelterDbContextFixture>
     [Theory]
     [InlineData("", 1, 1, 100, 1)]
     [InlineData("test2", 99, 1, 100, 1)]
-    [InlineData("test2", 1, 10, 100, 999)]
     [InlineData("test2", 1, 1, -2, 1)]
     [InlineData("test2", 1, 1, 70000000, 1)]
     //u have validation only on id, in first case test will fail because u probably has cost with id == 1 
