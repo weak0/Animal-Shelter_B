@@ -32,6 +32,7 @@ public class CostsControllerTests : IClassFixture<AnimalShelterDbContextFixture>
         };
         //Act
         var response = await _client.PostAsJsonAsync("configuration/costs", dto);
+        
         //Assert
         response.EnsureSuccessStatusCode();
         var cost = await _db.Costs.FirstOrDefaultAsync(x => x.CostName == dto.CostName);
@@ -50,7 +51,8 @@ public class CostsControllerTests : IClassFixture<AnimalShelterDbContextFixture>
             Category = CostsCategory.Maintenance,
             ShelterConfigId = 1,
             Cost = 100,
-            PaymentPeriod = PaymentPeriod.Monthly
+            PaymentPeriod = PaymentPeriod.Monthly,
+            CostId = 1
         };
         //Act
         var response = await _client.PutAsJsonAsync($"configuration/costs/{dto.CostId}", dto);
@@ -66,20 +68,13 @@ public class CostsControllerTests : IClassFixture<AnimalShelterDbContextFixture>
     public async Task DeleteCost_ShouldDeleteCostAndOk_WhenDataIsValid()
     {
         //Arrange
-        var dto = new UpdateCostDto()
-        {
-            CostName = "test1",
-            Category = CostsCategory.Maintenance,
-            ShelterConfigId = 1,
-            Cost = 100,
-            PaymentPeriod = PaymentPeriod.Monthly
-        };
+        var costId = 2;
         await _db.SaveChangesAsync();
         //Act
-        var response = await _client.DeleteAsync($"configuration/costs/{dto.CostId}");
+        var response = await _client.DeleteAsync($"configuration/costs/{costId}");
         //Assert
         response.EnsureSuccessStatusCode();
-        var deletedCost = await _db.Costs.FirstOrDefaultAsync(x => x.CostId == dto.CostId);
+        var deletedCost = await _db.Costs.FirstOrDefaultAsync(x => x.CostId == costId);
         Assert.Null(deletedCost);
     }
 }

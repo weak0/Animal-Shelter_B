@@ -1,15 +1,12 @@
-﻿using System.ComponentModel.DataAnnotations;
-using Animal_Shelter;
+﻿// tip - on the end always clear unused usings
+using System.ComponentModel.DataAnnotations;
 using Animal_Shelter.Entities;
 using Animal_Shelter.Mappers;
 using Animal_Shelter.Models;
-using Animal_Shelter.Models.Validators;
-using Animal_Shelter.Serivces;
 using Animal_Shelter.Services;
 using AnimalShelterTests.Fixtures;
-using AnimalShelterTests.Mocks;
 using AutoMapper;
-using Microsoft.AspNetCore.Identity;
+using ValidationException = FluentValidation.ValidationException;
 
 namespace AnimalShelterTests.Services;
 
@@ -47,24 +44,24 @@ public class CostServiceTests: IClassFixture<AnimalShelterDbContextFixture>
         Assert.Equal(dto.CostName, serviceResponse.CostName);
         Assert.Equal(dto.Cost, serviceResponse.Cost);
     }
+    
     [Fact]
     public async Task UpdateCost_ShouldUpdateCostAndOk_WhenDataIsValid()
     {
         //Arrange
         var dto = new UpdateCostDto()
         {
-            CostName = "test1",
-            Category = CostsCategory.Maintenance,
-            ShelterConfigId = 1,
-            Cost = 100,
-            PaymentPeriod = PaymentPeriod.Monthly
+            CostId = 1,        
+            CostName = "UpdatedCostName",
+            Cost = 200
         };
         //Act
-         await _costService.UpdateCost(dto.CostId, dto);
+        await _costService.UpdateCost(1, dto);
         //Assert
-        // Assert.NotNull(serviceResponse);
-        // Assert.Equal(dto.CostName, serviceResponse.CostName);
-        // Assert.Equal(dto.Cost, serviceResponse.Cost);
+        var updatedCost = await _fixture.Db.Costs.FindAsync(1);
+        Assert.NotNull(updatedCost);
+        Assert.Equal(dto.CostName, updatedCost.CostName);
+        Assert.Equal(dto.Cost, updatedCost.Cost);
     }
     [Fact]
     public async Task DeleteCost_ShouldDeleteCostAndOk_WhenDataIsValid()
@@ -72,14 +69,8 @@ public class CostServiceTests: IClassFixture<AnimalShelterDbContextFixture>
         //Arrange
         var cost = new Costs()
         {
-            CostName = "test1",
-            Category = CostsCategory.Maintenance,
-            ShelterConfigId = 1,
-            Cost = 100,
-            PaymentPeriod = PaymentPeriod.Monthly
+            CostId = 1
         };
-        _fixture.Db.Costs.Add(cost);
-        await _fixture.Db.SaveChangesAsync();
         //Act
         await _costService.DeleteCost(cost.CostId);
         //Assert
@@ -88,25 +79,23 @@ public class CostServiceTests: IClassFixture<AnimalShelterDbContextFixture>
     }
     
     [Theory]
-    [InlineData("", CostsCategory.Maintenance, 1, 100, PaymentPeriod.Monthly)]
-    // [InlineData("test1", 0, 1, 100, PaymentPeriod.Monthly)]
-    [InlineData("test1", CostsCategory.Maintenance, 0, 100, PaymentPeriod.Monthly)]
-    [InlineData("test1", CostsCategory.Maintenance, 1, 0, PaymentPeriod.Monthly)]
+    [InlineData("", 1, 1, 100, 1)]
+    [InlineData("test2", 99, 1, 100, 1)]
+    [InlineData("test2", 1, 1, -2, 1)]
+    [InlineData("test2", 1, 1, 70000000, 1)]
     
-public async Task AddCost_ShouldThrowException_WhenDataIsInvalid(string costName, CostsCategory category, int shelterConfigId, double cost, PaymentPeriod paymentPeriod)
+public async Task AddCost_ShouldThrowException_WhenDataIsInvalid(string costName, int category, int shelterConfigId, double cost, int paymentPeriod)
     {
         //Arrange
         var dto = new AddCostDto()
         {
             CostName = costName,
-            Category = category,
+            Category = (CostsCategory)category,
             ShelterConfigId = shelterConfigId,
             Cost = (decimal)cost,
-            PaymentPeriod = paymentPeriod
+            PaymentPeriod = (PaymentPeriod)paymentPeriod
         };
-        //Act
-        async Task Act() => await _costService.AddCost(dto);
-        //Assert
-        await Assert.ThrowsAsync<ValidationException>(Act);
+        //Act & Assert
+        await Assert.ThrowsAsync<ValidationException>(async () => await _costService.AddCost(dto));
     }
 }
