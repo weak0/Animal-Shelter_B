@@ -31,7 +31,7 @@ public class CostService : ICostService
     public async Task<AddCostDto> AddCost(AddCostDto dto)
     {
         var cost = _mapper.Map<Costs>(dto);
-        var configuration = await _configurationService.GetConfigurationName(dto.ShelterConfigId);
+        var configuration = await _configurationService.GetConfigurationName(cost.ShelterConfigId);
 
         if (cost.ShelterConfigId != dto.ShelterConfigId)
             throw new Exception($"Is the chosen configuration correct? {configuration} is not the same as {dto.ShelterConfigId}.");
@@ -43,8 +43,9 @@ public class CostService : ICostService
 
     public async Task UpdateCost(int costId, UpdateCostDto dto)
     {
+        // missing mapping, you didn't use dto
         var cost = await _context.Costs.FindAsync(costId) ?? throw new NotFoundException("The cost ID not found.");
-        _context.Costs.Update(cost);
+        _context.Costs.Update(cost); // ?
         await _context.SaveChangesAsync();
     }
 

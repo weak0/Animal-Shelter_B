@@ -67,6 +67,7 @@ public class CostsControllerTests : IClassFixture<AnimalShelterDbContextFixture>
     public async Task DeleteCost_ShouldDeleteCostAndOk_WhenDataIsValid()
     {
         //Arrange
+        // redundant data u only need id from obj witch is in db
         var dto = new UpdateCostDto()
         {
             CostName = "test1",

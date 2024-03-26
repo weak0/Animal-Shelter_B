@@ -1,16 +1,14 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿// tip - on the end always clear unused usings
+using System.ComponentModel.DataAnnotations;
 using Animal_Shelter;
 using Animal_Shelter.Entities;
 using Animal_Shelter.Exceptions;
 using Animal_Shelter.Mappers;
 using Animal_Shelter.Models;
-using Animal_Shelter.Models.Validators;
-using Animal_Shelter.Serivces;
 using Animal_Shelter.Services;
 using AnimalShelterTests.Fixtures;
-using AnimalShelterTests.Mocks;
 using AutoMapper;
-using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 
 namespace AnimalShelterTests.Services;
 
@@ -53,6 +51,7 @@ public class CostServiceTests: IClassFixture<AnimalShelterDbContextFixture>
     public async Task UpdateCost_ShouldUpdateCostAndOk_WhenDataIsValid()
     {
         //Arrange
+        // try to pass for test only data which is needed, this dto is redundant
         var dto = new UpdateCostDto()
         {
             CostName = "test1",
@@ -64,6 +63,7 @@ public class CostServiceTests: IClassFixture<AnimalShelterDbContextFixture>
         //Act
         dto.CostName = "UpdatedCostName";
         dto.Cost = 200;
+        // this 1 -  how u know that it will be 1? , magic number
         await _costService.UpdateCost(1, dto);
         //Assert
         var updatedCost = await _fixture.Db.Costs.FindAsync(1);
@@ -94,7 +94,8 @@ public class CostServiceTests: IClassFixture<AnimalShelterDbContextFixture>
     
     [Theory]
     [InlineData("", CostsCategory.Maintenance, 1, 100, PaymentPeriod.Monthly)]
-    [InlineData("test1", CostsCategory.Maintenance, 0, 100, PaymentPeriod.Monthly)]
+    [InlineData("test2", CostsCategory.Maintenance, 0, 100, PaymentPeriod.Monthly)]
+    //u have validation only on id, in first case test will fail because u propably has cost with id == 1 
     
 public async Task AddCost_ShouldThrowException_WhenDataIsInvalid(string costName, CostsCategory category, int shelterConfigId, double cost, PaymentPeriod paymentPeriod)
     {
@@ -108,6 +109,7 @@ public async Task AddCost_ShouldThrowException_WhenDataIsInvalid(string costName
             PaymentPeriod = paymentPeriod
         };
         //Act
+        // why are u creating variable if u dont need it?
         var exception = await Assert.ThrowsAsync<NotFoundException>(async () => await _costService.AddCost(dto));
     }
 }
