@@ -41,7 +41,6 @@ public class CostService : ICostService
 
     public async Task UpdateCost(int costId, UpdateCostDto dto)
     {
-        // missing mapping, you didn't use dto
         var cost = await _context.Costs.FindAsync(costId) ?? throw new NotFoundException("The cost ID not found.");
         _mapper.Map(dto, cost);
         await _context.SaveChangesAsync();

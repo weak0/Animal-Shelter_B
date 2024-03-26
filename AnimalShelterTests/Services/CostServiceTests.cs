@@ -49,7 +49,6 @@ public class CostServiceTests: IClassFixture<AnimalShelterDbContextFixture>
     public async Task UpdateCost_ShouldUpdateCostAndOk_WhenDataIsValid()
     {
         //Arrange
-        // try to pass for test only data which is needed, this dto is redundant
         var dto = new UpdateCostDto()
         {
             CostId = 1,        
@@ -57,7 +56,6 @@ public class CostServiceTests: IClassFixture<AnimalShelterDbContextFixture>
             Cost = 200
         };
         //Act
-        // this 1 -  how u know that it will be 1? , magic number
         await _costService.UpdateCost(1, dto);
         //Assert
         var updatedCost = await _fixture.Db.Costs.FindAsync(1);
@@ -85,7 +83,6 @@ public class CostServiceTests: IClassFixture<AnimalShelterDbContextFixture>
     [InlineData("test2", 99, 1, 100, 1)]
     [InlineData("test2", 1, 1, -2, 1)]
     [InlineData("test2", 1, 1, 70000000, 1)]
-    //u have validation only on id, in first case test will fail because u probably has cost with id == 1 
     
 public async Task AddCost_ShouldThrowException_WhenDataIsInvalid(string costName, int category, int shelterConfigId, double cost, int paymentPeriod)
     {
@@ -98,8 +95,7 @@ public async Task AddCost_ShouldThrowException_WhenDataIsInvalid(string costName
             Cost = (decimal)cost,
             PaymentPeriod = (PaymentPeriod)paymentPeriod
         };
-        //Act
-        // why are u creating variable if u dont need it?
+        //Act & Assert
         await Assert.ThrowsAsync<ValidationException>(async () => await _costService.AddCost(dto));
     }
 }

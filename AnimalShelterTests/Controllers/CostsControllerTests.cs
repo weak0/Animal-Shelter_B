@@ -69,8 +69,6 @@ public class CostsControllerTests : IClassFixture<AnimalShelterDbContextFixture>
     {
         //Arrange
         var costId = 2;
-        // redundant data u only need id from obj witch is in db
-       
         await _db.SaveChangesAsync();
         //Act
         var response = await _client.DeleteAsync($"configuration/costs/{costId}");
