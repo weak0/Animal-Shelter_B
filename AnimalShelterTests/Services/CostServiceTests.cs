@@ -54,15 +54,11 @@ public class CostServiceTests: IClassFixture<AnimalShelterDbContextFixture>
         // try to pass for test only data which is needed, this dto is redundant
         var dto = new UpdateCostDto()
         {
-            CostName = "test1",
-            Category = CostsCategory.Maintenance,
-            ShelterConfigId = 1,
-            Cost = 100,
-            PaymentPeriod = PaymentPeriod.Monthly
+            CostId = 1,        
+            CostName = "UpdatedCostName",
+            Cost = 200
         };
         //Act
-        dto.CostName = "UpdatedCostName";
-        dto.Cost = 200;
         // this 1 -  how u know that it will be 1? , magic number
         await _costService.UpdateCost(1, dto);
         //Assert
@@ -77,11 +73,7 @@ public class CostServiceTests: IClassFixture<AnimalShelterDbContextFixture>
         //Arrange
         var cost = new Costs()
         {
-            CostName = "test1",
-            Category = CostsCategory.Maintenance,
-            ShelterConfigId = 1,
-            Cost = 100,
-            PaymentPeriod = PaymentPeriod.Monthly
+            CostId = 1
         };
         _fixture.Db.Costs.Add(cost);
         await _fixture.Db.SaveChangesAsync();
@@ -93,23 +85,26 @@ public class CostServiceTests: IClassFixture<AnimalShelterDbContextFixture>
     }
     
     [Theory]
-    [InlineData("", CostsCategory.Maintenance, 1, 100, PaymentPeriod.Monthly)]
-    [InlineData("test2", CostsCategory.Maintenance, 0, 100, PaymentPeriod.Monthly)]
-    //u have validation only on id, in first case test will fail because u propably has cost with id == 1 
+    [InlineData("", 1, 1, 100, 1)]
+    [InlineData("test2", 99, 1, 100, 1)]
+    [InlineData("test2", 1, 10, 100, 999)]
+    [InlineData("test2", 1, 1, -2, 1)]
+    [InlineData("test2", 1, 1, 70000000, 1)]
+    //u have validation only on id, in first case test will fail because u probably has cost with id == 1 
     
-public async Task AddCost_ShouldThrowException_WhenDataIsInvalid(string costName, CostsCategory category, int shelterConfigId, double cost, PaymentPeriod paymentPeriod)
+public async Task AddCost_ShouldThrowException_WhenDataIsInvalid(string costName, int category, int shelterConfigId, double cost, int paymentPeriod)
     {
         //Arrange
         var dto = new AddCostDto()
         {
             CostName = costName,
-            Category = category,
+            Category = (CostsCategory)category,
             ShelterConfigId = shelterConfigId,
             Cost = (decimal)cost,
-            PaymentPeriod = paymentPeriod
+            PaymentPeriod = (PaymentPeriod)paymentPeriod
         };
         //Act
         // why are u creating variable if u dont need it?
-        var exception = await Assert.ThrowsAsync<NotFoundException>(async () => await _costService.AddCost(dto));
+        await Assert.ThrowsAsync<ValidationException>(async () => await _costService.AddCost(dto));
     }
 }

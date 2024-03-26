@@ -9,7 +9,7 @@ public enum CostsCategory : int
     Employees = 3
 }
 
-public enum PaymentPeriod
+public enum PaymentPeriod : int
 {
     Daily = 1,
     Monthly = 2,

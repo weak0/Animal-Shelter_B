@@ -37,8 +37,8 @@ public class AnimalShelterDbContextFixture : IDisposable
     
     private void AddTestCost(AnimalShelterDbContext db)
     {
-        // u can hardcode id for cost if you need it 
         var cost = new Costs();
+        cost.CostId = 1;
         cost.CostName = "test1";
         cost.Category = CostsCategory.Maintenance;
         cost.ShelterConfigId = 1;
