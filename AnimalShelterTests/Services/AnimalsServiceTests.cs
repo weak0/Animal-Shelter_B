@@ -1,4 +1,5 @@
 ﻿using Animal_Shelter.Entities;
+using Animal_Shelter.Exceptions;
 using Animal_Shelter.Mappers;
 using Animal_Shelter.Models;
 using Animal_Shelter.Services;
@@ -20,7 +21,7 @@ public class AnimalsServiceTests: IClassFixture<AnimalShelterDbContextFixture>
         var mapper = new Mapper(new MapperConfiguration(cfg => cfg.AddProfile<AnimalShelterMappingProfile>()));
         var shelterService = new ShelterService(fixture.Db);
         var configurationService = new ConfigurationService(fixture.Db, mapper, shelterService);
-        _animalsService = new AnimalsService(_fixture.Db, mapper, shelterService);
+        _animalsService = new AnimalsService(fixture.Db, mapper, shelterService);
     }
     
     [Fact]
@@ -43,6 +44,25 @@ public class AnimalsServiceTests: IClassFixture<AnimalShelterDbContextFixture>
         Assert.Equal(dto.Type, serviceResponse.Type);
         Assert.Equal(dto.Size, serviceResponse.Size);
         Assert.Equal(dto.ShelterId, serviceResponse.ShelterId);
+    }
+    
+    [Fact]
+    public async Task AddAnimal_ShouldThrowException_WhenShelterDoesNotExist()
+    {
+        //Arrange
+        var dto = new AddAnimalDto()
+        {
+            AnimalName = "test2",
+            Type = AnimalType.Cat,
+            Size = AnimalSize.Small,
+            ShelterId = 100,
+            
+        };
+        //Act
+        async Task AddAnimal() => await _animalsService.AddAnimal(dto);
+        //Assert
+        await Assert.ThrowsAsync<NotFoundException>(AddAnimal);
+        
     }
     
 }
