@@ -64,5 +64,19 @@ public class AnimalsServiceTests: IClassFixture<AnimalShelterDbContextFixture>
         await Assert.ThrowsAsync<NotFoundException>(AddAnimal);
         
     }
+
+    [Fact]
+    public async Task DeleteAnimal_ShouldThrowException_WhenAnimalIdDoesNotExist()
+    {
+        //Arrange
+        var animal = new Animals()
+        {
+            AnimalId = 200
+        };
+        //Act
+       async Task DeleteAnimal() => await _animalsService.DeleteAnimal(animal.AnimalId);
+        //Assert
+        await Assert.ThrowsAsync<NotFoundException>(DeleteAnimal);
+    }
     
 }
