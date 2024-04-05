@@ -36,7 +36,7 @@ builder.Services.AddAuthentication(options =>
     {
         ValidIssuer = authSettings.JwtIssuer,
         ValidAudience = authSettings.JwtIssuer,
-        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(authSettings.JwtKey))
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("JanPawelGralWKartyIMiałŁepObdarty"))
     };
 });
 builder.Services.AddSingleton<IValidator<AuthShelterRegisterDto>, CreateShelterValidator>();
