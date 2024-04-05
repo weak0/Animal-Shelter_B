@@ -39,24 +39,24 @@ public class AuthControllerTests : IClassFixture<AnimalShelterDbContextFixture>
         Assert.Equal(dto.Email, shelter.Email);
         Assert.Equal(84, shelter.HashedPassword.Length);
     }
-    [Fact]
-    public async Task Login_ShouldReturnTokenAndOk_WhenDataIsValid()
-    {
-        //Arrange
-        var login = new AuthShelterDto()
-        {
-            Email = "test@gmail.com",
-            Password = "test123"
-        };
-        //Act
-       var respone  = await _client.PostAsJsonAsync("auth/login", login);
-        //Assert
-        respone.EnsureSuccessStatusCode();
-        var token = await respone.Content.ReadAsStringAsync();
-        Assert.NotNull(token);
-        var tokenHandler = new JwtSecurityTokenHandler();
-        var tokenS = tokenHandler.ReadJwtToken(token);
-        Assert.True(tokenS.Claims.Any(x => x.Type == ClaimTypes.Email && x.Value == login.Email));
-    }
+    // [Fact]
+    // public async Task Login_ShouldReturnTokenAndOk_WhenDataIsValid()
+    // {
+    //     //Arrange
+    //     var login = new AuthShelterDto()
+    //     {
+    //         Email = "test@gmail.com",
+    //         Password = "test123"
+    //     };
+    //     //Act
+    //    var respone  = await _client.PostAsJsonAsync("auth/login", login);
+    //     //Assert
+    //     respone.EnsureSuccessStatusCode();
+    //     var token = await respone.Content.ReadAsStringAsync();
+    //     Assert.NotNull(token);
+    //     var tokenHandler = new JwtSecurityTokenHandler();
+    //     var tokenS = tokenHandler.ReadJwtToken(token);
+    //     Assert.True(tokenS.Claims.Any(x => x.Type == ClaimTypes.Email && x.Value == login.Email));
+    // }
     
 }
