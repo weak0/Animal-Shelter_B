@@ -22,29 +22,3 @@ jobs:
         run: dotnet build --no-restore
       - name: Test
         run: dotnet test --no-build --verbosity normal
-
-  integration-test:
-    runs-on: ubuntu-latest
-    needs: build
-    strategy:
-      matrix:
-        retry-max: [1, 2, 3] # Number of retry attempts
-
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Setup .NET
-        uses: actions/setup-dotnet@v4
-        with:
-          dotnet-version: 8.0.x
-
-      - name: Restore dependencies
-        run: dotnet restore
-
-      - name: Run integration tests
-        run: dotnet test --filter TestCategory=Integration --no-build --verbosity normal
-
-      - name: Retry on failure
-        if: ${{ matrix.retry-max }} > 1 && failure()
-        run: dotnet test --filter TestCategory=Integration --no-build --verbosity normal
