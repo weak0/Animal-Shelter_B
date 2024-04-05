@@ -1,4 +1,4 @@
-name: C# YAML Formatter
+name: Format C# and YAML files
 
 on:
   push:
