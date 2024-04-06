@@ -1,4 +1,4 @@
-name: .NET
+name: CI
 
 on:
   push:
@@ -18,6 +18,15 @@ jobs:
           dotnet-version: 8.0.x
       - name: Restore dependencies
         run: dotnet restore
+      - name: Set environment variables
+        env:
+          AUTH_JWT_ISSUER: ${{ secrets.AUTH_JWT_ISSUER }}
+          AUTH_JWT_DATE: ${{ secrets.AUTH_JWT_DATE }}
+          AUTH_JWT_KEY: ${{ secrets.AUTH_JWT_SECRET }}
+        run: 
+          echo "AUTH_JWT_ISSUER=$AUTH_JWT_ISSUER" >> $GITHUB_ENV
+          echo "AUTH_JWT_DATE=$AUTH_JWT_DATE" >> $GITHUB_ENV
+          echo "AUTH_JWT_KEY=$AUTH_JWT_KEY" >> $GITHUB_ENV
       - name: Build
         run: dotnet build --no-restore
       - name: Test

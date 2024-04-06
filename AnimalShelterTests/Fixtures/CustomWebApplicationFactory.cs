@@ -22,7 +22,6 @@ public class CustomWebApplicationFactory<TProgram> : WebApplicationFactory<TProg
             var descriptor = services.SingleOrDefault(service => service.ServiceType == typeof(AnimalShelterDbContext));
             if (descriptor != null) services.Remove(descriptor);
             services.AddSingleton(_context);
-            services.AddSingleton<IAuthenticationSettings>(new AuthenticationSettingsMock());
         });
     }
 }
