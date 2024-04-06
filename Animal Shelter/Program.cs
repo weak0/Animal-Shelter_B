@@ -23,7 +23,7 @@ builder.Services.AddScoped<IPasswordHasher<Shelter>, PasswordHasher<Shelter>>();
 var authSettings = new AuthenticationSettings();
 if (Environment.GetEnvironmentVariable("CI") == "true")
 {
-    authSettings.ExpiresDate = int.Parse(Environment.GetEnvironmentVariable("AUTH_JWT_DATE"));
+    // authSettings.ExpiresDate = int.Parse(Environment.GetEnvironmentVariable("AUTH_JWT_DATE"));
     authSettings.JwtIssuer = Environment.GetEnvironmentVariable("AUTH_JWT_ISSUER");
     authSettings.JwtKey = Environment.GetEnvironmentVariable("AUTH_JWT_KEY");
 }
