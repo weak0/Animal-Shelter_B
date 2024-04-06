@@ -20,6 +20,7 @@ jobs:
         run: dotnet restore
       - name: Set environment variables
         env:
+          CI: true
           AUTH_JWT_ISSUER: ${{ secrets.AUTH_JWT_ISSUER }}
           AUTH_JWT_DATE: ${{ secrets.AUTH_JWT_DATE }}
           AUTH_JWT_KEY: ${{ secrets.AUTH_JWT_KEY }}
