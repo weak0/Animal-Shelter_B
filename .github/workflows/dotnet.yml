@@ -22,7 +22,7 @@ jobs:
         env:
           AUTH_JWT_ISSUER: ${{ secrets.AUTH_JWT_ISSUER }}
           AUTH_JWT_DATE: ${{ secrets.AUTH_JWT_DATE }}
-          AUTH_JWT_KEY: ${{ secrets.AUTH_JWT_SECRET }}
+          AUTH_JWT_KEY: ${{ secrets.AUTH_JWT_KEY }}
         run: 
           echo "AUTH_JWT_ISSUER=$AUTH_JWT_ISSUER" >> $GITHUB_ENV
           echo "AUTH_JWT_DATE=$AUTH_JWT_DATE" >> $GITHUB_ENV
