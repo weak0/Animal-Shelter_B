@@ -25,9 +25,9 @@ jobs:
           AUTH_JWT_DATE: ${{ secrets.AUTH_JWT_DATE }}
           AUTH_JWT_KEY: ${{ secrets.AUTH_JWT_KEY }}
         run: 
-          echo "AUTH_JWT_ISSUER=$AUTH_JWT_ISSUER" >> $GITHUB_ENV
-          echo "AUTH_JWT_DATE=$AUTH_JWT_DATE" >> $GITHUB_ENV
-          echo "AUTH_JWT_KEY=$AUTH_JWT_KEY" >> $GITHUB_ENV
+          echo "AUTH_JWT_ISSUER=$AUTH_JWT_ISSUER"
+          echo "AUTH_JWT_DATE=$AUTH_JWT_DATE"
+          echo "AUTH_JWT_KEY=$AUTH_JWT_KEY"
       - name: Build
         run: dotnet build --no-restore
       - name: Test
