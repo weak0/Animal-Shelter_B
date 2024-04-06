@@ -1,10 +1,10 @@
-name: .NET
+name: CI
 
 on:
   push:
-    branches: [ "master" ]
+    branches: [ "master", "CI-tests" ]
   pull_request:
-    branches: [ "master" ]
+    branches: [ "master", "CI-tests" ]
 
 jobs:
   build:
@@ -21,4 +21,9 @@ jobs:
       - name: Build
         run: dotnet build --no-restore
       - name: Test
+        env:
+          CI: true
+          AUTH_JWT_ISSUER: ${{ secrets.AUTH_JWT_ISSUER }}
+          AUTH_JWT_DATE: ${{ secrets.AUTH_JWT_DATE }}
+          AUTH_JWT_KEY: ${{ secrets.AUTH_JWT_KEY }}
         run: dotnet test --no-build --verbosity normal
