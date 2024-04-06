@@ -1,4 +1,6 @@
-﻿using Animal_Shelter.Data;
+﻿using Animal_Shelter;
+using Animal_Shelter.Data;
+using AnimalShelterTests.Mocks;
 using Microsoft.AspNetCore.Mvc.Testing;
 
 namespace AnimalShelterTests.Fixtures;
@@ -20,6 +22,7 @@ public class CustomWebApplicationFactory<TProgram> : WebApplicationFactory<TProg
             var descriptor = services.SingleOrDefault(service => service.ServiceType == typeof(AnimalShelterDbContext));
             if (descriptor != null) services.Remove(descriptor);
             services.AddSingleton(_context);
+            services.AddSingleton<IAuthenticationSettings>(new AuthenticationSettingsMock());
         });
     }
 }
