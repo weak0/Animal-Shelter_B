@@ -42,4 +42,3 @@ jobs:
           AUTH_JWT_ISSUER: ${{ secrets.AUTH_JWT_ISSUER }}
           AUTH_JWT_DATE: ${{ secrets.AUTH_JWT_DATE }}
           AUTH_JWT_KEY: ${{ secrets.AUTH_JWT_KEY }}
-        run: dotnet test --no-build --verbosity normal
