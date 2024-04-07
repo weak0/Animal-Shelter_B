@@ -36,5 +36,10 @@ jobs:
           git add .
           git commit -m "Apply code formatting"
           git push
+      - name: Test
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          CI: true
+          AUTH_JWT_ISSUER: ${{ secrets.AUTH_JWT_ISSUER }}
+          AUTH_JWT_DATE: ${{ secrets.AUTH_JWT_DATE }}
+          AUTH_JWT_KEY: ${{ secrets.AUTH_JWT_KEY }}
+        run: dotnet test --no-build --verbosity normal
