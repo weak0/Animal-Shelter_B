@@ -3,7 +3,9 @@ name: Lint
 
 on:
   push: null
-  pull_request: null
+  pull_request:  
+    paths:
+      - '**/*.yaml'
 
 permissions: { }
 
@@ -25,10 +27,6 @@ jobs:
 
       - name: Super-linter
         uses: super-linter/super-linter@v6.3.1
-        with:
-          exclude: |
-            .github/workflows/dotnet.yml
-            .github/workflows/format.yml
         env:
           VALIDATE_ALL_CODEBASE: false
           VALIDATE_ANSIBLE: false
