@@ -30,3 +30,8 @@ jobs:
           VALIDATE_ANSIBLE: false
           DEFAULT_BRANCH: master
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          
+        with:
+          exclude: |
+            .github/workflows/dotnet.yml
+            .github/workflows/format.yml
