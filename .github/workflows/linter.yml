@@ -1,0 +1,34 @@
+﻿name: Lint
+
+on:
+  push:
+    branches: [ "maciek-temp"]
+  pull_request: 
+    branches: [ "maciek-temp"]
+  
+permissions: { }
+
+jobs: 
+  lint:
+    permissions:
+      contents: read
+      packages: read
+      statuses: write
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: 8.0.x
+    - name: Restore dependencies
+      run: dotnet restore
+    - name: Build
+      run: dotnet build --no-restore
+    - name: Super-Linter
+      uses: super-linter/super-linter@v5.7.2
+      env:
+        VALIDATE_ALL_CODEBASE: true
+        DEFAULT_BRANCH: maciek-temp
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
