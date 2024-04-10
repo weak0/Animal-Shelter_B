@@ -25,12 +25,11 @@ public class AuthController : ControllerBase
         await _authService.CreateUser(newShelterDto);
         return Ok(newShelterDto.Email);
     }
-    
+
     [HttpPost("login")]
     public async Task<ActionResult<string>> Login([FromBody] AuthShelterDto shelter)
     {
         var token = await _authService.Login(shelter);
         return Ok(token);
     }
-
 }
