@@ -12,8 +12,8 @@ public class CustomWebApplicationFactory<TProgram> : WebApplicationFactory<TProg
 
     public CustomWebApplicationFactory(AnimalShelterDbContext context)
     {
-        _context = context;
-        
+      _context = context;
+
     }
     protected override void ConfigureWebHost (IWebHostBuilder builder)
     {
