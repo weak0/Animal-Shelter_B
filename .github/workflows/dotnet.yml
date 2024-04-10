@@ -5,6 +5,8 @@ on:
     branches: [ "master", "maciek-temp" ]
   pull_request:
     branches: [ "master", "CI-tests" ]
+    
+permissions: { }
 
 jobs:
   build:
@@ -29,6 +31,10 @@ jobs:
         run: dotnet test --no-build --verbosity normal
   
   lint:
+    permissions:
+      contents: read
+      packages: read
+      statuses: write
     runs-on: ubuntu-latest
     steps:
     - name: Checkout code
