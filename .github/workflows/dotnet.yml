@@ -1,3 +1,4 @@
+---
 name: CI
 
 on:
@@ -53,4 +54,7 @@ jobs:
         VALIDATE_ALL_CODEBASE: true
         DEFAULT_BRANCH: maciek-temp
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        JSCPD_REPORTER: false  
+```
+
           
