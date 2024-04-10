@@ -25,3 +25,4 @@ jobs:
           DEFAULT_BRANCH: maciek-temp
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           DISABLE_ERRORS: true
+          LEAK_SENSITIVE_DATA: false
