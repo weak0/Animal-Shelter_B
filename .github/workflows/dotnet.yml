@@ -2,7 +2,7 @@ name: CI
 
 on:
   push:
-    branches: [ "master", "CI-tests" ]
+    branches: [ "master", "maciek-temp" ]
   pull_request:
     branches: [ "master", "CI-tests" ]
 
