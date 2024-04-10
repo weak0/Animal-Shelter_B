@@ -6,4 +6,4 @@
 
 ![Workflow Status](https://github.com/weak0/Animal-Shelter_B/actions/workflows/format.yml/badge.svg)
 
-![Workflow Status](https://github.com/weak0/Animal-Shelter_B/actions/workflows/super_linter.yml/badge.svg)
+![Workflow Status](https://github.com/weak0/Animal-Shelter_B/actions/workflows/linter.yml/badge.svg)
