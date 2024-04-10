@@ -23,7 +23,7 @@ public class AnimalsServiceTests: IClassFixture<AnimalShelterDbContextFixture>
         var configurationService = new ConfigurationService(fixture.Db, mapper, shelterService);
         _animalsService = new AnimalsService(fixture.Db, mapper, shelterService);
     }
-    
+
     [Fact]
     public async Task AddAnimal_ShouldAddAnimalAndOk_WhenDataIsValid()
     {
@@ -34,7 +34,7 @@ public class AnimalsServiceTests: IClassFixture<AnimalShelterDbContextFixture>
             Type = AnimalType.Cat,
             Size = AnimalSize.Small,
             ShelterId = 1,
-            
+
         };
         //Act
         var serviceResponse = await _animalsService.AddAnimal(dto);
@@ -45,25 +45,7 @@ public class AnimalsServiceTests: IClassFixture<AnimalShelterDbContextFixture>
         Assert.Equal(dto.Size, serviceResponse.Size);
         Assert.Equal(dto.ShelterId, serviceResponse.ShelterId);
     }
-    
-    [Fact]
-    public async Task AddAnimal_ShouldThrowException_WhenShelterDoesNotExist()
-    {
-        //Arrange
-        var dto = new AddAnimalDto()
-        {
-            AnimalName = "test2",
-            Type = AnimalType.Cat,
-            Size = AnimalSize.Small,
-            ShelterId = 100,
-            
-        };
-        //Act
-        async Task AddAnimal() => await _animalsService.AddAnimal(dto);
-        //Assert
-        await Assert.ThrowsAsync<NotFoundException>(AddAnimal);
-        
-    }
+
 
     [Fact]
     public async Task DeleteAnimal_ShouldThrowException_WhenAnimalIdDoesNotExist()
@@ -78,5 +60,80 @@ public class AnimalsServiceTests: IClassFixture<AnimalShelterDbContextFixture>
         //Assert
         await Assert.ThrowsAsync<NotFoundException>(DeleteAnimal);
     }
-    
+    [Fact]
+    public async Task AddAnimal_ShouldThrowException_WhenShelterDoesNotExist()
+    {
+      //Arrange
+      var dto = new AddAnimalDto()
+      {
+        AnimalName = "test2",
+        Type = AnimalType.Cat,
+        Size = AnimalSize.Small,
+        ShelterId = 100,
+
+      };
+      //Act
+      async Task AddAnimal() => await _animalsService.AddAnimal(dto);
+      //Assert
+      await Assert.ThrowsAsync<NotFoundException>(AddAnimal);
+
+    }
+
+    [Fact]
+    public async Task AddAnimal_ShouldThrowException_WhenAnimalNameIsEmpty()
+    {
+        //Arrange
+        var dto = new AddAnimalDto()
+        {
+            AnimalName = "",
+            Type = AnimalType.Cat,
+            Size = AnimalSize.Small,
+            ShelterId = 1,
+
+        };
+        //Act
+        async Task AddAnimal() => await _animalsService.AddAnimal(dto);
+        //Assert
+        await Assert.ThrowsAsync<ValidationException>(AddAnimal);
+    }
+    [Fact]
+    public async Task AddAnimal_ShouldThrowException_WhenAnimalTypeIsInvalid()
+    {
+        //Arrange
+        var dto = new AddAnimalDto()
+        {
+            AnimalName = "test1",
+            Type = (AnimalType)100,
+            Size = AnimalSize.Small,
+            ShelterId = 1,
+
+        };
+        //Act
+        async Task AddAnimal() => await _animalsService.AddAnimal(dto);
+        //Assert
+        await Assert.ThrowsAsync<BadRequestException>(AddAnimal);
+    }
+    [Fact]
+    public async Task GetAnimalById_ShouldReturnAnimal_WhenDataIsValid()
+    {
+        //Arrange
+        var animal = new Animals()
+        {
+            AnimalName = "test1",
+            Type = AnimalType.Cat,
+            Size = AnimalSize.Small,
+            ShelterId = 1,
+        };
+        _fixture.Db.Animals.Add(animal);
+        await _fixture.Db.SaveChangesAsync();
+        //Act
+        var serviceResponse = await _animalsService.GetAnimalById(animal.AnimalId);
+        //Assert
+        Assert.NotNull(serviceResponse);
+        Assert.Equal(animal.AnimalName, serviceResponse.AnimalName);
+        Assert.Equal(animal.Type, serviceResponse.Type);
+        Assert.Equal(animal.Size, serviceResponse.Size);
+        Assert.Equal(animal.ShelterId, serviceResponse.ShelterId);
+    }
+
 }
