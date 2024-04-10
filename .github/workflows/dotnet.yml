@@ -27,3 +27,10 @@ jobs:
           AUTH_JWT_DATE: ${{ secrets.AUTH_JWT_DATE }}
           AUTH_JWT_KEY: ${{ secrets.AUTH_JWT_KEY }}
         run: dotnet test --no-build --verbosity normal
+      - name: Super-linter
+        uses: super-linter/super-linter@v6.3.1
+        env:
+          VALIDATE_ALL_CODEBASE: false
+          VALIDATE_ANSIBLE: false
+          DEFAULT_BRANCH: master
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
