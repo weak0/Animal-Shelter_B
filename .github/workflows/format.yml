@@ -19,8 +19,12 @@ jobs:
       - name: Install dotnet-format
         run: dotnet tool install -g dotnet-format
 
-      - name: Run dotnet-format
-        run: dotnet format --check "Animal-Shelter_B/Animal_Shelter/"
+      - name: Run dotnet-format for AnimalShelter folder
+        run: dotnet format --check "Animal-Shelter_B/Animal_Shelter/AnimalShelter.csproj"
+        continue-on-error: true
+
+      - name: Run dotnet-format for AnimalShelterTests folder
+        run: dotnet format --check "Animal-Shelter_B/AnimalShelterTests/AnimalShelterTests.csproj"
         continue-on-error: true
 
       - name: Check for changes
