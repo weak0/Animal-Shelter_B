@@ -21,7 +21,18 @@ builder.Services.AddDbContext<AnimalShelterDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 builder.Services.AddScoped<IPasswordHasher<Shelter>, PasswordHasher<Shelter>>();
 var authSettings = new AuthenticationSettings();
-builder.Configuration.GetSection("Auth").Bind(authSettings);
+if (Environment.GetEnvironmentVariable("CI") == "true")
+{
+    authSettings.ExpiresDate = int.Parse(Environment.GetEnvironmentVariable("AUTH_JWT_DATE")?? throw new InvalidOperationException());
+    authSettings.JwtIssuer = Environment.GetEnvironmentVariable("AUTH_JWT_ISSUER") ?? throw new InvalidOperationException();
+    authSettings.JwtKey = Environment.GetEnvironmentVariable("AUTH_JWT_KEY") ?? throw new InvalidOperationException();
+    Console.WriteLine(authSettings.JwtKey);
+}
+else
+{
+    builder.Configuration.GetSection("Auth").Bind(authSettings);
+}
+
 builder.Services.AddSingleton<IAuthenticationSettings>(authSettings);
 builder.Services.AddAuthentication(options =>
 {

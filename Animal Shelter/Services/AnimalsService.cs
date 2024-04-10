@@ -54,7 +54,7 @@ public class AnimalsService : IAnimalsService
         var shelterName = await _shelterService.GetShelterName(dto.ShelterId);
 
         if (animal.ShelterId != dto.ShelterId)
-            throw new Exception($"Is the chosen shelter correct? {shelterName} is not the same as {dto.ShelterId}.");
+            throw new NotFoundException($"Is the chosen shelter correct? {shelterName} is not the same as {dto.ShelterId}.");
         
         await _dbContext.Animals.AddAsync(animal);
         await _dbContext.SaveChangesAsync();

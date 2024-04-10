@@ -1,4 +1,6 @@
-﻿using Animal_Shelter.Data;
+﻿using Animal_Shelter;
+using Animal_Shelter.Data;
+using AnimalShelterTests.Mocks;
 using Microsoft.AspNetCore.Mvc.Testing;
 
 namespace AnimalShelterTests.Fixtures;

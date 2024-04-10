@@ -1,0 +1,29 @@
+name: CI
+
+on:
+  push:
+    branches: [ "master", "CI-tests" ]
+  pull_request:
+    branches: [ "master", "CI-tests" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 8.0.x
+      - name: Restore dependencies
+        run: dotnet restore
+      - name: Build
+        run: dotnet build --no-restore
+      - name: Test
+        env:
+          CI: true
+          AUTH_JWT_ISSUER: ${{ secrets.AUTH_JWT_ISSUER }}
+          AUTH_JWT_DATE: ${{ secrets.AUTH_JWT_DATE }}
+          AUTH_JWT_KEY: ${{ secrets.AUTH_JWT_KEY }}
+        run: dotnet test --no-build --verbosity normal

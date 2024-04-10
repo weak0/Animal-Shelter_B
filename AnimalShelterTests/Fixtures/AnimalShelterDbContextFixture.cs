@@ -17,7 +17,7 @@ public class AnimalShelterDbContextFixture : IDisposable
         Db = new AnimalShelterDbContext(options);
         Db.Database.EnsureCreated();
         AddTestUser(Db);
-        AddTestCost(Db);
+        AddTestCosts(Db);
     }
 
     public void Dispose()
@@ -35,15 +35,21 @@ public class AnimalShelterDbContextFixture : IDisposable
         db.SaveChanges();
     }
     
-    private void AddTestCost(AnimalShelterDbContext db)
+    private void AddTestCosts(AnimalShelterDbContext db)
     {
-        var cost = new Costs();
-        cost.CostName = "test1";
-        cost.Category = CostsCategory.Maintenance;
-        cost.ShelterConfigId = 1;
-        cost.Cost = 100;
-        cost.PaymentPeriod = PaymentPeriod.Monthly;
-        db.Costs.Add(cost);
+        for (int i = 1; i <= 10; i++)
+        {
+            var cost = new Costs();
+            cost.CostId = i; 
+            cost.CostName = "test" + i;
+            cost.Category = CostsCategory.Maintenance;
+            cost.ShelterConfigId = 1; 
+            cost.Cost = 100; 
+            cost.PaymentPeriod = PaymentPeriod.Monthly; 
+            db.Costs.Add(cost);
+        }
+    
         db.SaveChanges();
     }
+
 }

@@ -3,6 +3,7 @@ using Animal_Shelter.Entities;
 using Animal_Shelter.Exceptions;
 using Animal_Shelter.Models;
 using AutoMapper;
+using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 
 namespace Animal_Shelter.Services;
@@ -30,27 +31,24 @@ public class CostService : ICostService
 
     public async Task<AddCostDto> AddCost(AddCostDto dto)
     {
+        IsCostModelValid(dto);
         var cost = _mapper.Map<Costs>(dto);
-        var configuration = await _configurationService.GetConfigurationName(dto.ShelterConfigId);
-
-        if (cost.ShelterConfigId != dto.ShelterConfigId)
-            throw new Exception($"Is the chosen configuration correct? {configuration} is not the same as {dto.ShelterConfigId}.");
-        
+        await _configurationService.GetConfigurationName(cost.ShelterConfigId);
         await _context.Costs.AddAsync(cost);
         await _context.SaveChangesAsync();
         return _mapper.Map<AddCostDto>(cost);
     }
 
-    public async Task UpdateCost(int id, UpdateCostDto dto)
+    public async Task UpdateCost(int costId, UpdateCostDto dto)
     {
-        var cost = await _context.Costs.FindAsync(id) ?? throw new NotFoundException("The cost ID not found.");
-        _context.Costs.Update(cost);
+        var cost = await _context.Costs.FindAsync(costId) ?? throw new NotFoundException("The cost ID not found.");
+        _mapper.Map(dto, cost);
         await _context.SaveChangesAsync();
     }
 
-    public async Task DeleteCost(int id)
+    public async Task DeleteCost(int costId)
     {
-        var cost = await _context.Costs.FindAsync(id) ?? throw new NotFoundException("The cost ID not found.");
+        var cost = await _context.Costs.FindAsync(costId) ?? throw new NotFoundException("The cost ID not found.");
         _context.Costs.Remove(cost);
         await _context.SaveChangesAsync();
     }
@@ -59,5 +57,20 @@ public class CostService : ICostService
     {
         var costs = await _context.Costs.ToListAsync();
         return _mapper.Map<List<GetCostsDto>>(costs);
+    }
+
+    private void IsCostModelValid(AddCostDto dto)
+    {
+        if (dto.CostName == String.Empty || dto.CostName == null)
+            throw new ValidationException("Cost name is required.");
+        
+        if (!Enum.IsDefined(typeof(CostsCategory), dto.Category))
+            throw new ValidationException($"Invalid dto category: {dto.Category}");
+
+        if (dto.Cost <= 0 || dto.Cost > 1000000)
+            throw new ValidationException("Cost is incorrect.");
+            
+        if (!Enum.IsDefined(typeof(PaymentPeriod), dto.PaymentPeriod))
+            throw new ValidationException($"Invalid payment period: {dto.PaymentPeriod}");
     }
 }
