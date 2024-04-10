@@ -13,7 +13,7 @@ public interface IAnimalsService
     Task<List<GetAnimalDto>> GetAllAnimals();
     Task<List<GetAnimalDto>> GetAllAnimalsByShelterId(int shelterId);
     Task<AddAnimalDto> AddAnimal(AddAnimalDto dto);
-    
+
     //Task UpdateAnimal(int animalId);
     Task DeleteAnimal(int animalId);
 }
@@ -55,7 +55,11 @@ public class AnimalsService : IAnimalsService
 
         if (animal.ShelterId != dto.ShelterId)
             throw new NotFoundException($"Is the chosen shelter correct? {shelterName} is not the same as {dto.ShelterId}.");
-        
+        if (animal.AnimalName == "")
+            throw new ValidationException("Animal name is required.");
+        if (animal.Type > (AnimalType)3)
+            throw new BadRequestException("Invalid animal type. Choose between Dog (1), Cat (2), or Other (3).");
+
         await _dbContext.Animals.AddAsync(animal);
         await _dbContext.SaveChangesAsync();
         return _mapper.Map<AddAnimalDto>(animal);
@@ -66,6 +70,6 @@ public class AnimalsService : IAnimalsService
         var animal = await _dbContext.Animals.FindAsync(animalId) ?? throw new NotFoundException("Animal id not found.");
         _dbContext.Animals.Remove(animal);
         await _dbContext.SaveChangesAsync();
-        
+
     }
 }

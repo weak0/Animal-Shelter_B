@@ -6,7 +6,8 @@ using Animal_Shelter.Models;
 using Animal_Shelter.Services;
 using AnimalShelterTests.Fixtures;
 using AutoMapper;
-using ValidationException = FluentValidation.ValidationException;
+using Animal_Shelter.Exceptions;
+using ValidationException = Animal_Shelter.Exceptions.ValidationException;
 
 namespace AnimalShelterTests.Services;
 
@@ -23,8 +24,8 @@ public class CostServiceTests: IClassFixture<AnimalShelterDbContextFixture>
         var shelterService = new ShelterService(fixture.Db);
         var configurationService = new ConfigurationService(fixture.Db, mapper, shelterService);
         _costService = new CostService(_fixture.Db, mapper, configurationService);
-    }   
-    
+    }
+
     [Fact]
     public async Task AddCost_ShouldAddCostAndOk_WhenDataIsValid()
     {
@@ -44,14 +45,14 @@ public class CostServiceTests: IClassFixture<AnimalShelterDbContextFixture>
         Assert.Equal(dto.CostName, serviceResponse.CostName);
         Assert.Equal(dto.Cost, serviceResponse.Cost);
     }
-    
+
     [Fact]
     public async Task UpdateCost_ShouldUpdateCostAndOk_WhenDataIsValid()
     {
         //Arrange
         var dto = new UpdateCostDto()
         {
-            CostId = 1,        
+            CostId = 1,
             CostName = "UpdatedCostName",
             Cost = 200
         };
@@ -77,13 +78,13 @@ public class CostServiceTests: IClassFixture<AnimalShelterDbContextFixture>
         var deletedCost = await _fixture.Db.Costs.FindAsync(cost.CostId);
         Assert.Null(deletedCost);
     }
-    
+
     [Theory]
     [InlineData("", 1, 1, 100, 1)]
     [InlineData("test2", 99, 1, 100, 1)]
     [InlineData("test2", 1, 1, -2, 1)]
     [InlineData("test2", 1, 1, 70000000, 1)]
-    
+
 public async Task AddCost_ShouldThrowException_WhenDataIsInvalid(string costName, int category, int shelterConfigId, double cost, int paymentPeriod)
     {
         //Arrange
