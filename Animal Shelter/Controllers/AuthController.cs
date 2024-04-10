@@ -36,6 +36,7 @@ public class AuthController : ControllerBase
     [HttpGet("hello")]
     public ActionResult<string> SayHello()
     {
+        var test = "xd";
         return Ok("Hello Word!");
     }
 
