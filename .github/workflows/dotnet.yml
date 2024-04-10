@@ -9,8 +9,9 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-
     steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
       - name: Setup .NET
         uses: actions/setup-dotnet@v4
         with:
@@ -26,12 +27,14 @@ jobs:
           AUTH_JWT_DATE: ${{ secrets.AUTH_JWT_DATE }}
           AUTH_JWT_KEY: ${{ secrets.AUTH_JWT_KEY }}
         run: dotnet test --no-build --verbosity normal
+  
   lint:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v1
+    - name: Checkout code
+      uses: actions/checkout@v1
     - name: Super-Linter
       uses: super-linter/super-linter@v5.7.2
       env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOOKEN }}
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           
