@@ -22,7 +22,7 @@ jobs:
       - name: Super-Linter
         uses: super-linter/super-linter@v6.3.1
         env:
-          DEFAULT_BRANCH: origin/maciek-temp
+          DEFAULT_BRANCH: origin/master
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           DISABLE_ERRORS: false
           VALIDATE_ALL_CODEBASE: false
