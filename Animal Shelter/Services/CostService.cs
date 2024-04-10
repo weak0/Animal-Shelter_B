@@ -5,6 +5,7 @@ using Animal_Shelter.Models;
 using AutoMapper;
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
+using ValidationException = Animal_Shelter.Exceptions.ValidationException;
 
 namespace Animal_Shelter.Services;
 
@@ -21,7 +22,7 @@ public class CostService : ICostService
     private readonly AnimalShelterDbContext _context;
     private readonly IMapper _mapper;
     private readonly IConfigurationService _configurationService;
-    
+
     public CostService(AnimalShelterDbContext context, IMapper mapper, IConfigurationService configurationService)
     {
         _context = context;
@@ -52,7 +53,7 @@ public class CostService : ICostService
         _context.Costs.Remove(cost);
         await _context.SaveChangesAsync();
     }
-    
+
     public async Task<List<GetCostsDto>> GetAllCosts()
     {
         var costs = await _context.Costs.ToListAsync();
@@ -63,13 +64,13 @@ public class CostService : ICostService
     {
         if (dto.CostName == String.Empty || dto.CostName == null)
             throw new ValidationException("Cost name is required.");
-        
+
         if (!Enum.IsDefined(typeof(CostsCategory), dto.Category))
             throw new ValidationException($"Invalid dto category: {dto.Category}");
 
         if (dto.Cost <= 0 || dto.Cost > 1000000)
             throw new ValidationException("Cost is incorrect.");
-            
+
         if (!Enum.IsDefined(typeof(PaymentPeriod), dto.PaymentPeriod))
             throw new ValidationException($"Invalid payment period: {dto.PaymentPeriod}");
     }
