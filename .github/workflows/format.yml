@@ -20,7 +20,7 @@ jobs:
         run: dotnet tool install -g dotnet-format
 
       - name: Run dotnet-format
-        run: dotnet format --check -g
+        run: dotnet format --check "Animal-Shelter_B/Animal_Shelter/"
         continue-on-error: true
 
       - name: Check for changes
