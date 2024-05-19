@@ -3,6 +3,9 @@
 # C# files
 [*.cs]
 
+# disable error WHITESPACE: Fix whitespace formatting
+dotnet_diagnostic.WHITESPACE.severity = none
+
 #### Core EditorConfig Options ####
 
 # Indentation and spacing
@@ -13,6 +16,7 @@ tab_width = 4
 #### .NET Coding Conventions ####
 
 # this. and Me. preferences
+
 dotnet_style_qualification_for_method = true
 
 #### Diagnostic configuration ####
