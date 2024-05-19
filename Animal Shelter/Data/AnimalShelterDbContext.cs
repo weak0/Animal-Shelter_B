@@ -12,7 +12,6 @@ public class AnimalShelterDbContext : DbContext
     public DbSet<AnimalSize> AnimalSizes { get; set; }
     public DbSet<PaymentPeriod> PaymentPeriods { get; set; }
     public DbSet<CostsCategory> CostsCategories { get; set; }
- 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Shelter>().HasData(
