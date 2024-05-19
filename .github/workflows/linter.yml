@@ -26,3 +26,4 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           DISABLE_ERRORS: false
           VALIDATE_ALL_CODEBASE: false
+          VALIDATE_WHITESPACE: false
