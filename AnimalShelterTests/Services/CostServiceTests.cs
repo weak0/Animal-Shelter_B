@@ -14,16 +14,12 @@ namespace AnimalShelterTests.Services;
 public class CostServiceTests: IClassFixture<AnimalShelterDbContextFixture>
 {
     private readonly AnimalShelterDbContextFixture _fixture;
-    private readonly IConfigurationService _configurationService;
     private readonly CostService _costService;
 
     public CostServiceTests(AnimalShelterDbContextFixture fixture)
     {
         _fixture = fixture;
-        var mapper = new Mapper(new MapperConfiguration(cfg => cfg.AddProfile<AnimalShelterMappingProfile>()));
-        var shelterService = new ShelterService(fixture.Db);
-        var configurationService = new ConfigurationService(fixture.Db, mapper, shelterService);
-        _costService = new CostService(_fixture.Db, mapper, configurationService);
+        _costService = new CostService(fixture.Db, new Mapper(new MapperConfiguration(cfg => cfg.AddProfile<CostMapper>())));
     }
 
     [Fact]
@@ -33,10 +29,10 @@ public class CostServiceTests: IClassFixture<AnimalShelterDbContextFixture>
         var dto = new AddCostDto()
         {
             CostName = "test1",
-            Category = CostsCategory.Maintenance,
-            ShelterConfigId = 1,
+            CategoryId = 1,
+            ShelterId = 1,
             Cost = 100,
-            PaymentPeriod = PaymentPeriod.Monthly
+            PaymentPeriodId = (int)PaymentPeriodEnum.Monthly
         };
         //Act
         var serviceResponse = await _costService.AddCost(dto);
@@ -57,7 +53,7 @@ public class CostServiceTests: IClassFixture<AnimalShelterDbContextFixture>
             Cost = 200
         };
         //Act
-        await _costService.UpdateCost(1, dto);
+        await _costService.UpdateCost(dto);
         //Assert
         var updatedCost = await _fixture.Db.Costs.FindAsync(1);
         Assert.NotNull(updatedCost);
@@ -91,10 +87,10 @@ public async Task AddCost_ShouldThrowException_WhenDataIsInvalid(string costName
         var dto = new AddCostDto()
         {
             CostName = costName,
-            Category = (CostsCategory)category,
-            ShelterConfigId = shelterConfigId,
-            Cost = (decimal)cost,
-            PaymentPeriod = (PaymentPeriod)paymentPeriod
+            CategoryId = category,
+            ShelterId = shelterConfigId,
+            Cost = (int)cost,
+            PaymentPeriodId = paymentPeriod
         };
         //Act & Assert
         await Assert.ThrowsAsync<ValidationException>(async () => await _costService.AddCost(dto));

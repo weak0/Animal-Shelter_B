@@ -10,14 +10,14 @@ public class CostsControllerTests : IClassFixture<AnimalShelterDbContextFixture>
 {
     private readonly HttpClient _client;
     private readonly AnimalShelterDbContext _db;
-    
+
     public CostsControllerTests(AnimalShelterDbContextFixture fixture)
     {
         var factory = new CustomWebApplicationFactory<Program>(fixture.Db);
         _client = factory.CreateClient();
         _db = factory.Context;
     }
-    
+
     [Fact]
     public async Task AddCost_ShouldAddCostAndOk_WhenDataIsValid()
     {
@@ -25,14 +25,16 @@ public class CostsControllerTests : IClassFixture<AnimalShelterDbContextFixture>
         var dto = new AddCostDto()
         {
             CostName = "test1",
-            Category = CostsCategory.Maintenance,
-            ShelterConfigId = 1,
+            CategoryId = 1,
+            ShelterId = 1,
             Cost = 100,
-            PaymentPeriod = PaymentPeriod.Monthly
+            PaymentPeriodId= 1,
+            CostDescription = "Super cost",
+
         };
         //Act
-        var response = await _client.PostAsJsonAsync("configuration/costs", dto);
-        
+        var response = await _client.PostAsJsonAsync("costs", dto);
+
         //Assert
         response.EnsureSuccessStatusCode();
         var cost = await _db.Costs.FirstOrDefaultAsync(x => x.CostName == dto.CostName);
@@ -40,7 +42,7 @@ public class CostsControllerTests : IClassFixture<AnimalShelterDbContextFixture>
         Assert.Equal(dto.CostName, cost.CostName);
         Assert.Equal(dto.Cost, cost.Cost);
     }
-    
+
     [Fact]
     public async Task UpdateCost_ShouldUpdateCostAndOk_WhenDataIsValid()
     {
@@ -48,14 +50,14 @@ public class CostsControllerTests : IClassFixture<AnimalShelterDbContextFixture>
         var dto = new UpdateCostDto()
         {
             CostName = "test1",
-            Category = CostsCategory.Maintenance,
-            ShelterConfigId = 1,
+            CategoryId = (int)CostsCategoryEnum.Maintenance,
+            ShelterId = 1,
             Cost = 100,
-            PaymentPeriod = PaymentPeriod.Monthly,
+            PaymentPeriodId = (int)PaymentPeriodEnum.Monthly,
             CostId = 1
         };
         //Act
-        var response = await _client.PutAsJsonAsync($"configuration/costs/{dto.CostId}", dto);
+        var response = await _client.PutAsJsonAsync($"costs", dto);
         //Assert
         response.EnsureSuccessStatusCode();
         var updatedCost = await _db.Costs.FirstOrDefaultAsync(x => x.CostId == dto.CostId);
@@ -71,7 +73,7 @@ public class CostsControllerTests : IClassFixture<AnimalShelterDbContextFixture>
         var costId = 2;
         await _db.SaveChangesAsync();
         //Act
-        var response = await _client.DeleteAsync($"configuration/costs/{costId}");
+        var response = await _client.DeleteAsync($"costs/{costId}");
         //Assert
         response.EnsureSuccessStatusCode();
         var deletedCost = await _db.Costs.FirstOrDefaultAsync(x => x.CostId == costId);

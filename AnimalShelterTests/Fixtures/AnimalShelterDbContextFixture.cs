@@ -8,7 +8,7 @@ namespace AnimalShelterTests.Fixtures;
 public class AnimalShelterDbContextFixture : IDisposable
 {
     public AnimalShelterDbContext Db { get;}
-    
+
     public AnimalShelterDbContextFixture()
     {
         var options = new DbContextOptionsBuilder<AnimalShelterDbContext>()
@@ -34,21 +34,19 @@ public class AnimalShelterDbContextFixture : IDisposable
         db.Shelters.Add(user);
         db.SaveChanges();
     }
-    
+
     private void AddTestCosts(AnimalShelterDbContext db)
     {
         for (int i = 1; i <= 10; i++)
         {
             var cost = new Costs();
-            cost.CostId = i; 
             cost.CostName = "test" + i;
-            cost.Category = CostsCategory.Maintenance;
-            cost.ShelterConfigId = 1; 
-            cost.Cost = 100; 
-            cost.PaymentPeriod = PaymentPeriod.Monthly; 
+            cost.CategoryId = (int)CostsCategoryEnum.Maintenance;
+            cost.ShelterId = 1;
+            cost.Cost = 100;
+            cost.PaymentPeriodId = (int)PaymentPeriodEnum.Monthly;
             db.Costs.Add(cost);
         }
-    
         db.SaveChanges();
     }
 

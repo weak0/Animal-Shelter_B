@@ -12,15 +12,13 @@ namespace AnimalShelterTests.Services;
 public class AnimalsServiceTests: IClassFixture<AnimalShelterDbContextFixture>
 {
     private readonly AnimalShelterDbContextFixture _fixture;
-    private readonly IConfigurationService _configurationService;
     private readonly AnimalsService _animalsService;
 
     public AnimalsServiceTests(AnimalShelterDbContextFixture fixture)
     {
         _fixture = fixture;
-        var mapper = new Mapper(new MapperConfiguration(cfg => cfg.AddProfile<AnimalShelterMappingProfile>()));
+        var mapper = new Mapper(new MapperConfiguration(cfg => cfg.AddProfile<AnimalMapper>()));
         var shelterService = new ShelterService(fixture.Db);
-        var configurationService = new ConfigurationService(fixture.Db, mapper, shelterService);
         _animalsService = new AnimalsService(fixture.Db, mapper, shelterService);
     }
 
@@ -31,8 +29,8 @@ public class AnimalsServiceTests: IClassFixture<AnimalShelterDbContextFixture>
         var dto = new AddAnimalDto()
         {
             AnimalName = "test1",
-            Type = AnimalType.Cat,
-            Size = AnimalSize.Small,
+            TypeId = (int)AnimalTypeEnum.Cat,
+            SizeId = (int)AnimalSizeEnum.Small,
             ShelterId = 1,
 
         };
@@ -41,8 +39,8 @@ public class AnimalsServiceTests: IClassFixture<AnimalShelterDbContextFixture>
         //Assert
         Assert.NotNull(serviceResponse);
         Assert.Equal(dto.AnimalName, serviceResponse.AnimalName);
-        Assert.Equal(dto.Type, serviceResponse.Type);
-        Assert.Equal(dto.Size, serviceResponse.Size);
+        Assert.Equal(dto.TypeId, serviceResponse.TypeId);
+        Assert.Equal(dto.SizeId, serviceResponse.SizeId);
         Assert.Equal(dto.ShelterId, serviceResponse.ShelterId);
     }
 
@@ -67,8 +65,8 @@ public class AnimalsServiceTests: IClassFixture<AnimalShelterDbContextFixture>
       var dto = new AddAnimalDto()
       {
         AnimalName = "test2",
-        Type = AnimalType.Cat,
-        Size = AnimalSize.Small,
+        TypeId = (int)AnimalTypeEnum.Cat,
+        SizeId = (int)AnimalSizeEnum.Small,
         ShelterId = 100,
 
       };
@@ -86,8 +84,8 @@ public class AnimalsServiceTests: IClassFixture<AnimalShelterDbContextFixture>
         var dto = new AddAnimalDto()
         {
             AnimalName = "",
-            Type = AnimalType.Cat,
-            Size = AnimalSize.Small,
+            TypeId = (int)AnimalTypeEnum.Cat,
+            SizeId = (int)AnimalSizeEnum.Small,
             ShelterId = 1,
 
         };
@@ -103,8 +101,8 @@ public class AnimalsServiceTests: IClassFixture<AnimalShelterDbContextFixture>
         var dto = new AddAnimalDto()
         {
             AnimalName = "test1",
-            Type = (AnimalType)100,
-            Size = AnimalSize.Small,
+            TypeId = 100,
+            SizeId = (int)AnimalSizeEnum.Small,
             ShelterId = 1,
 
         };
@@ -120,8 +118,8 @@ public class AnimalsServiceTests: IClassFixture<AnimalShelterDbContextFixture>
         var animal = new Animals()
         {
             AnimalName = "test1",
-            Type = AnimalType.Cat,
-            Size = AnimalSize.Small,
+            TypeId = (int)AnimalTypeEnum.Cat,
+            SizeId = (int)AnimalSizeEnum.Small,
             ShelterId = 1,
         };
         _fixture.Db.Animals.Add(animal);
@@ -131,8 +129,8 @@ public class AnimalsServiceTests: IClassFixture<AnimalShelterDbContextFixture>
         //Assert
         Assert.NotNull(serviceResponse);
         Assert.Equal(animal.AnimalName, serviceResponse.AnimalName);
-        Assert.Equal(animal.Type, serviceResponse.Type);
-        Assert.Equal(animal.Size, serviceResponse.Size);
+        Assert.Equal(animal.TypeId, serviceResponse.TypeId);
+        Assert.Equal(animal.SizeId, serviceResponse.SizeId);
         Assert.Equal(animal.ShelterId, serviceResponse.ShelterId);
     }
 
