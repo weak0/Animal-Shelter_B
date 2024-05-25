@@ -2,6 +2,7 @@ using System.Text;
 using Animal_Shelter;
 using Animal_Shelter.Data;
 using Animal_Shelter.Entities;
+using Animal_Shelter.Exceptions;
 using Animal_Shelter.Models;
 using Animal_Shelter.Models.Validators;
 using Animal_Shelter.Serivces;
@@ -46,6 +47,8 @@ builder.Services.AddScoped<IShelterService, ShelterService>();
 builder.Services.AddScoped<ICostService, CostService>();
 builder.Services.AddScoped<IConfigurationService, ConfigurationService>();
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+builder.Services.AddExceptionHandler<AppExceptionHandler>();
+builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
 
 var app = builder.Build();
 
@@ -55,6 +58,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+app.UseExceptionHandler(options => { });
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
@@ -66,3 +70,5 @@ app.Run();
 public partial class Program
 {
 };
+
+
