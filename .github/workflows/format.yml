@@ -1,0 +1,38 @@
+name: Format Code
+
+on: [push, pull_request]
+
+jobs:
+  format:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v2
+      with:
+        dotnet-version: '8.0.x'
+
+    - name: Install dotnet-format
+      run: dotnet tool install -g dotnet-format
+
+    - name: Add dotnet tools to PATH
+      run: echo "$(dotnet --tool-path ~/.dotnet/tools)" >> $GITHUB_PATH
+
+    - name: Restore dependencies
+      run: dotnet restore
+
+    - name: Run dotnet format
+      run: dotnet format --check --verbosity diagnostic
+      continue-on-error: true
+
+    - name: Commit changes
+      if: ${{ steps.dotnet-format.outcome == 'failure' }}
+      run: |
+        git config --global user.name 'github-actions[bot]'
+        git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+        git add .
+        git commit -m 'Format code with dotnet format' || echo 'No changes to commit'
+        git push
