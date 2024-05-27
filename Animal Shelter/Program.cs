@@ -1,6 +1,7 @@
 using System.Text;
 using Animal_Shelter;
 using Animal_Shelter.Data;
+using Animal_Shelter.Data.ExteranalData;
 using Animal_Shelter.Entities;
 using Animal_Shelter.Models;
 using Animal_Shelter.Models.Validators;
@@ -26,7 +27,6 @@ if (Environment.GetEnvironmentVariable("CI") == "true")
     authSettings.ExpiresDate = int.Parse(Environment.GetEnvironmentVariable("AUTH_JWT_DATE")?? throw new InvalidOperationException());
     authSettings.JwtIssuer = Environment.GetEnvironmentVariable("AUTH_JWT_ISSUER") ?? throw new InvalidOperationException();
     authSettings.JwtKey = Environment.GetEnvironmentVariable("AUTH_JWT_KEY") ?? throw new InvalidOperationException();
-    Console.WriteLine(authSettings.JwtKey);
 }
 else
 {
@@ -55,6 +55,7 @@ builder.Services.AddScoped<IAuthSerivce, AuthService>();
 builder.Services.AddScoped<IAnimalsService, AnimalsService>();
 builder.Services.AddScoped<IShelterService, ShelterService>();
 builder.Services.AddScoped<ICostService, CostService>();
+builder.Services.AddScoped<IPriceJsonApiClient>(_ => new PriceJsonApiClient(builder.Configuration["PriceJsonApiKey"]));
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 var app = builder.Build();

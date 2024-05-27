@@ -1,9 +1,11 @@
-﻿using Animal_Shelter.Entities;
+﻿using Animal_Shelter.Data.ExteranalData;
+using Animal_Shelter.Entities;
 using Animal_Shelter.Exceptions;
 using Animal_Shelter.Mappers;
 using Animal_Shelter.Models;
 using Animal_Shelter.Services;
 using AnimalShelterTests.Fixtures;
+using AnimalShelterTests.Mocks;
 using AutoMapper;
 
 
@@ -18,9 +20,15 @@ namespace AnimalShelterTests.Services
         public AnimalsServiceTests(AnimalShelterDbContextFixture fixture)
         {
             _fixture = fixture;
-            var mapper = new Mapper(new MapperConfiguration(cfg => cfg.AddProfile<AnimalMapper>()));
+            var mapper = new Mapper(new MapperConfiguration(cfg =>
+            {
+                cfg.AddProfile<AnimalMapper>();
+                cfg.AddProfile<CostMapper>();
+            }));
             var shelterService = new ShelterService(fixture.Db);
-            _animalsService = new AnimalsService(fixture.Db, mapper, shelterService);
+            var costService = new CostService(fixture.Db, mapper);
+            var priceJsonApiClient = new PriceJsonApiClientMock();
+            _animalsService = new AnimalsService(fixture.Db, mapper, shelterService, costService, priceJsonApiClient);
         }
 
         [Fact]
