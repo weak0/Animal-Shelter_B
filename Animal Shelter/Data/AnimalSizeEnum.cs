@@ -1,6 +1,6 @@
 ﻿namespace Animal_Shelter.Entities;
 
-public enum AnimalSizeEnum :int
+public enum AnimalSizeEnum : int
 {
     Small = 1,
     Medium = 2,
