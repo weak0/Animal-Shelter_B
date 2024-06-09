@@ -36,7 +36,7 @@ public class PriceJsonApiClient : IPriceJsonApiClient
 
         using var response = await client.SendAsync(request);
         response.EnsureSuccessStatusCode();
-        return 27;
+        return ConvertPrice(30);
         var body = await response.Content.ReadAsStringAsync();
         
         var priceResponses = JsonConvert.DeserializeObject<PriceJsonResponse>(body)
@@ -52,7 +52,6 @@ public class PriceJsonApiClient : IPriceJsonApiClient
         var sumPrices = pricesString.Select(price => decimal.Parse(price, NumberStyles.AllowCurrencySymbol | NumberStyles.AllowDecimalPoint | NumberStyles.AllowThousands, CultureInfo.InvariantCulture)).ToList().Sum();
         var averagePrice = sumPrices / products.Count();
         return ConvertPrice(averagePrice);
-
     }
 
     private int ConvertPrice(decimal price)
