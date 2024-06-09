@@ -26,7 +26,7 @@ public class PriceJsonApiClient : IPriceJsonApiClient
         var request = new HttpRequestMessage
         {
             Method = HttpMethod.Get,
-            RequestUri = new Uri($"https://{ApiHost}/pricejson/search?q=${animalTypeValue}%20food%2030lb&category=petfood"),
+            RequestUri = new Uri($"https://{ApiHost}/pricejson/search?q=${animalTypeValue}%20food%2030lb&category=dog%20supplies"),
             Headers =
             {
                 { "X-RapidAPI-Key", ApiKey },
@@ -36,6 +36,7 @@ public class PriceJsonApiClient : IPriceJsonApiClient
 
         using var response = await client.SendAsync(request);
         response.EnsureSuccessStatusCode();
+        return 27;
         var body = await response.Content.ReadAsStringAsync();
         
         var priceResponses = JsonConvert.DeserializeObject<PriceJsonResponse>(body)

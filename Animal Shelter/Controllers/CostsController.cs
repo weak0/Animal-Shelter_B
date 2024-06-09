@@ -1,20 +1,21 @@
 ﻿using Animal_Shelter.Entities;
 using Animal_Shelter.Models;
 using Animal_Shelter.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Animal_Shelter.Controllers;
 
 [ApiController]
 [Route("costs")]
-
+[Authorize]
 public class CostsController : ControllerBase
 {
     private readonly ICostService _costService;
     
     public CostsController(ICostService costService)
     {
-        _costService = costService;
+        _costService = costService;                  
     }
     
     [HttpPost]
